@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Bloc/Login/login_cubit.dart';
 import '../Bloc/User/user_cubit.dart';
+import '../Bloc/Wallet/wallet_cubit.dart';
 import '../Constants/Strings/app_strings.dart';
 import '../Presentation/Pages/Login/login_page.dart';
 import '../Presentation/Pages/Wallet/payment_request_page.dart';
@@ -29,11 +30,18 @@ class AppRouter {
             ));
       case PAYMENT_REQUEST_PAGE:
         return MaterialPageRoute(
-            builder: (BuildContext context) => BlocProvider(
-              create: (context) => UserCubit(),
-              child: PaymentRequestpage(methos: args!["method"]),
-            ));
+            builder: (BuildContext context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider<UserCubit>(
+                    create: (context) => UserCubit(),
+                  ),
+                  BlocProvider<WalletCubit>(
+                    create: (context) => WalletCubit(),
+                  ),
 
+                ],
+                child:  PaymentRequestpage(methos: args!["method"]),
+            ));
       default:
         return MaterialPageRoute(
             builder: (BuildContext context) => BlocProvider(

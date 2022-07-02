@@ -14,13 +14,13 @@ class MaterialTextFieldBackground extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return TextFormField(
+      style: TextStyle(color: Colors.white),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please fillup';
         }
         return null;
       },
-
       readOnly: readOnly,
       controller: controller,
       decoration: InputDecoration(
