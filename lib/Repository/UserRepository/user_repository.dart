@@ -36,4 +36,14 @@ class UserRepository{
     return RandomUserResponse.fromJson(userRaw);
   }
 
+ Future addRequest(String? token, String? id) async{
+    Map<String, dynamic> data = {
+      "friend": id,
+
+    };
+    final userRaw=await userNetwork.addRequest(token,data);
+    // logger.d(Login.fromJson(userRaw));
+    return userRaw;
+  }
+
 }

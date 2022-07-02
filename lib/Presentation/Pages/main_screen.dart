@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../Constants/Colors/app_colors.dart';
+import 'Friends/find_friend.dart';
 import 'Home/home_page.dart';
 
 class MainScreen extends StatefulWidget {
@@ -23,10 +24,7 @@ class _MainScreenState extends State<MainScreen> {
           controller: _controller,
           children:  <Widget>[
             HomePage(),
-            Container(
-              color: Colors.blue,
-              height: 300,
-            ),
+            FindFriendPage(),
             HomePage(),
             HomePage(),
           ],
@@ -50,8 +48,8 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
+            icon: Icon(Icons.people),
+            label: 'Friends',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.school),

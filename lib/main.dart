@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
 import 'package:gontop_buyer/Bloc/Game/game_cubit.dart';
 import 'package:gontop_buyer/Bloc/Slider/slider_cubit.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -49,6 +50,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<GameCubit>(
           create: (context) => GameCubit(),
+        ),
+        BlocProvider<FriendCubit>(
+          create: (context) => FriendCubit(),
         ),
       ],
       child: MaterialApp(
