@@ -12,9 +12,51 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  int _pageIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return HomePage();
+    return Scaffold(
+
+      body:  SafeArea(
+        child: IndexedStack(
+          index: _pageIndex,
+          children:  <Widget>[
+            HomePage(),
+            Container(
+              color: Colors.blue,
+              height: 300,
+            ),
+            HomePage(),
+            HomePage(),
+          ],
+        ),
+      ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Business',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'School',
+          ),
+        ],
+        currentIndex:_pageIndex,
+        onTap: (int index){
+          setState(() {
+            _pageIndex = index;
+          },
+          );
+        },
+      ),
+    );
   }
 }
 
