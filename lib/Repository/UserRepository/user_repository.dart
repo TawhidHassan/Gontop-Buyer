@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:gontop_buyer/Data/Model/RandomUser/RandomUserResponse.dart';
 import 'package:logger/logger.dart';
 
 import '../../Data/Model/Login/Login.dart';
@@ -27,5 +28,12 @@ class UserRepository{
     return userRaw;
   }
 
+
+  Future<RandomUserResponse> getRandomUser(String? token) async{
+    final userRaw=await userNetwork.getRandomUser(token);
+    // logger.d(Login.fromJson(userRaw));
+
+    return RandomUserResponse.fromJson(userRaw);
+  }
 
 }

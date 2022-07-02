@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:gontop_buyer/Data/Model/RandomUser/RandomUserResponse.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
@@ -27,6 +28,14 @@ class UserCubit extends Cubit<UserState> {
     userRepository.createSeller(token, name,email,phone,password,image).then((value) => {
       if(value !=null){
         emit(UserCreated())
+      }
+    });
+  }
+
+  void getRandomUser(String? token) {
+    userRepository.getRandomUser(token).then((value) => {
+      if(value !=null){
+        emit(GetRandomSeller(userResponse: value))
       }
     });
   }

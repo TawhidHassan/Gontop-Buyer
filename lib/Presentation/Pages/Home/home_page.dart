@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../Bloc/Game/game_cubit.dart';
 import '../../../Constants/Colors/app_colors.dart';
+import '../../../Constants/Strings/app_strings.dart';
 import '../../../Service/LocalDataBase/localdata.dart';
 import 'Component/service_button.dart';
 import 'Component/slider.dart';
@@ -112,8 +113,12 @@ class _HomePageState extends State<HomePage> {
                 crossAxisSpacing: 0,
                 mainAxisSpacing: 16,
                 crossAxisCount: 3,
-                children: const <Widget>[
-                  ServiceButton(title: "Add Fund",assets: "assets/icons/wallet.svg"),
+                children:  <Widget>[
+                  InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, SELECT_PAYMENT_METHODS);
+                      },
+                      child: ServiceButton(title: "Add Fund",assets: "assets/icons/wallet.svg")),
                   ServiceButton(title: "Send Fund",assets: "assets/icons/mailsend.svg"),
                   ServiceButton(title: "My Orders",assets: "assets/icons/receiveicon.svg"),
                   ServiceButton(title: "Leaderboard",assets: "assets/icons/ranking.svg"),

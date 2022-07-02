@@ -10,3 +10,8 @@ class GetAllUser extends UserState {
 
   GetAllUser({this.userResponse});
 }
+class GetRandomSeller extends UserState {
+  final RandomUserResponse? userResponse;
+
+  GetRandomSeller({this.userResponse});
+}

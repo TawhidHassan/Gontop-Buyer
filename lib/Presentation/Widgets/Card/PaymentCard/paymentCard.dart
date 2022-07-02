@@ -9,9 +9,11 @@ class PaymentMethodCard extends StatefulWidget {
   final String? PaymentName;
   final String? userCode;
   final VoidCallback? onPressed;
+  final Color color;
+  final Color borderColor;
   const PaymentMethodCard({
     this.PaymentImage, this.PaymentName, this.userCode,this.onPressed,
-    Key? key}) : super(key: key);
+    Key? key, required this.color, required this.borderColor}) : super(key: key);
 
   @override
   State<PaymentMethodCard> createState() => _PaymentMethodCardState();
@@ -40,8 +42,8 @@ class _PaymentMethodCardState extends State<PaymentMethodCard> {
         height: 80,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-          border: Border.all(color: Color(0xFFEEEEEF),width: 1),
+          color: widget.color,
+          border: Border.all(color:widget.borderColor,width: 1),
           boxShadow: [
             BoxShadow(
               color: Color(0xFFBBBBBB).withOpacity(0.2),
@@ -67,37 +69,13 @@ class _PaymentMethodCardState extends State<PaymentMethodCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('${widget.PaymentName}',style: const TextStyle(
+                  Text('${widget.PaymentName}',style:  TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF08322C)
+                      color: widget.borderColor
                   ),),
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        radius: 2,
-                        backgroundColor: Color(0xFFC4C4C4)
-                      ),
-                      const SizedBox(width: 5,),
-                      Text('${widget.userCode}',style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF637875)
-                      ),),
-                    ],
-                  ),
+
                 ],
-              ),
-            ),
-            Expanded(
-                flex: 3,
-              child: Transform.scale(
-                scale: 1.6,
-                child: Radio(
-                  value: _value,
-                  groupValue: _value,
-                  onChanged: (val) => setState(() => _value = val as int),
-                ),
               ),
             ),
           ],

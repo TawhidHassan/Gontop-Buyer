@@ -55,7 +55,23 @@ class UserNetwork{
     }
   }
 
+  Future getRandomUser(String? token) async{
+    try{
+      var response = await http.get(
+        Uri.parse(BASE_URL + "wallet-router/random-online-seller"),
+        headers: {
+          "Authorization":"Bearer "+token!,
+          "Accept": "application/json"
+        },
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    }catch(e){
+      print(e);
+      return null;
+    }
 
+  }
 
 
 
