@@ -27,6 +27,25 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  new_version: ^0.3.0
+  intl: 0.17.0
+  logger: ^1.0.0
+  http: ^0.13.4
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+  path_provider:
+  image_picker: ^0.8.4+10
+  json_annotation: ^4.1.0
+  flutter_bloc: ^7.3.0
+  shimmer: ^2.0.0
+  syncfusion_flutter_charts: ^19.3.44+1
+  syncfusion_flutter_datepicker: ^19.3.44
+  lottie: ^1.2.1
+  flutter_svg: ^0.22.0
+  flutter_launcher_icons: ^0.9.2
+  search_choices: ^2.0.14
+  progress_state_button: ^1.0.3
+  awesome_dialog: ^2.1.1
   flutter:
     sdk: flutter
 
@@ -58,9 +77,11 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
+    - assets/translations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -87,3 +108,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
