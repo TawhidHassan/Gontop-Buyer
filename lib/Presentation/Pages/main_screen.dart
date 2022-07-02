@@ -13,13 +13,14 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _pageIndex = 0;
+  final PageController _controller = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body:  SafeArea(
-        child: IndexedStack(
-          index: _pageIndex,
+        child: PageView(
+          controller: _controller,
           children:  <Widget>[
             HomePage(),
             Container(
@@ -29,6 +30,11 @@ class _MainScreenState extends State<MainScreen> {
             HomePage(),
             HomePage(),
           ],
+          onPageChanged: (int index){
+            setState(() {
+              _pageIndex=index;
+            });
+          },
         ),
       ),
 
@@ -56,6 +62,7 @@ class _MainScreenState extends State<MainScreen> {
         onTap: (int index){
           setState(() {
             _pageIndex = index;
+            _controller.jumpToPage(index);
           },
           );
         },
