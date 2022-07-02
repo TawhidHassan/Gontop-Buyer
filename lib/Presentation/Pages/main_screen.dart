@@ -16,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      backgroundColor: kPrimaryColor,
       body:  SafeArea(
         child: IndexedStack(
           index: _pageIndex,
@@ -33,7 +33,11 @@ class _MainScreenState extends State<MainScreen> {
       ),
 
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Color(0xFF3879F0),
+        unselectedItemColor: Colors.white,
+        backgroundColor: Color(0xFF202358),
         type: BottomNavigationBarType.fixed,
+        elevation: 1,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

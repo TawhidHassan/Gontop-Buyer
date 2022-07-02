@@ -2,17 +2,24 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gontop_buyer/Bloc/Slider/slider_cubit.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'Bloc/Login/login_cubit.dart';
 import 'Bloc/User/user_cubit.dart';
+import 'Constants/Colors/app_colors.dart';
 import 'Route/app_route.dart';
 
 void main() async{
   //HttpOverrides.global =  MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   Directory directory = await pathProvider.getApplicationDocumentsDirectory();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getTemporaryDirectory(),
+  );
   Hive.init(directory.path);
   await Hive.openBox('users');
   runApp(
@@ -36,12 +43,15 @@ class MyApp extends StatelessWidget {
         BlocProvider<LoginCubit>(
           create: (context) => LoginCubit(),
         ),
+        BlocProvider<SliderCubit>(
+          create: (context) => SliderCubit(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'GonTop',
         theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch:kPrimaryColorx,
             fontFamily: 'Poppines'
         ),
         onGenerateRoute: router.generateRoute,

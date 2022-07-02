@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'Slider.dart';
+import 'Sliders.dart';
 
 
 part 'SliderResponse.g.dart';
@@ -14,7 +14,7 @@ class SliderResponse{
 
 
   String? status;
-  List<Slider>? data;
+  List<Sliders>? data;
 
 
   SliderResponse(this.status, this.data);

@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Slider.dart';
+part of 'Sliders.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Slider _$SliderFromJson(Map<String, dynamic> json) => Slider(
+Sliders _$SlidersFromJson(Map<String, dynamic> json) => Sliders(
       json['_id'] as String?,
       json['adsName'] as String?,
       json['image'] as String?,
       json['createdAt'] as String?,
     );
 
-Map<String, dynamic> _$SliderToJson(Slider instance) => <String, dynamic>{
+Map<String, dynamic> _$SlidersToJson(Sliders instance) => <String, dynamic>{
       '_id': instance.id,
       'adsName': instance.adsName,
       'image': instance.image,

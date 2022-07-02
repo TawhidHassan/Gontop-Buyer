@@ -10,7 +10,7 @@ SliderResponse _$SliderResponseFromJson(Map<String, dynamic> json) =>
     SliderResponse(
       json['status'] as String?,
       (json['data'] as List<dynamic>?)
-          ?.map((e) => Slider.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Sliders.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

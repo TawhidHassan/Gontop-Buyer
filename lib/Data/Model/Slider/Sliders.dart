@@ -4,10 +4,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
 
-part 'Slider.g.dart';
+part 'Sliders.g.dart';
 
 @JsonSerializable()
-class Slider{
+class Sliders{
 
   @JsonKey(name: "_id")
   String? id;
@@ -16,7 +16,7 @@ class Slider{
   String? createdAt;
 
 
-  Slider(this.id, this.adsName, this.image, this.createdAt);
+  Sliders(this.id, this.adsName, this.image, this.createdAt);
 
 
   @override
@@ -24,7 +24,7 @@ class Slider{
     return 'Slider{id: $id, adsName: $adsName, image: $image, createdAt: $createdAt}';
   }
 
-  factory Slider.fromJson(Map<String,dynamic>json)=>
-      _$SliderFromJson(json);
-  Map<String,dynamic>toJson()=>_$SliderToJson(this);
+  factory Sliders.fromJson(Map<String,dynamic>json)=>
+      _$SlidersFromJson(json);
+  Map<String,dynamic>toJson()=>_$SlidersToJson(this);
 }

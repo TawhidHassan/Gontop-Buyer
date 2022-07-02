@@ -37,6 +37,7 @@ dependencies:
   image_picker: ^0.8.4+10
   json_annotation: ^4.1.0
   flutter_bloc: ^7.3.0
+  hydrated_bloc: ^7.1.0
   shimmer: ^2.0.0
   syncfusion_flutter_charts: ^19.3.44+1
   syncfusion_flutter_datepicker: ^19.3.44
@@ -45,6 +46,7 @@ dependencies:
   flutter_launcher_icons: ^0.9.2
   search_choices: ^2.0.14
   progress_state_button: ^1.0.3
+  carousel_slider: ^4.0.0
   awesome_dialog: ^2.1.1
   flutter:
     sdk: flutter
@@ -55,6 +57,9 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  build_runner: ^2.0.0
+  json_serializable:
+  hive_generator:
   flutter_test:
     sdk: flutter
 
