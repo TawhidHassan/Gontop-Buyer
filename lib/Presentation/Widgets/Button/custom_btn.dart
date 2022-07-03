@@ -5,7 +5,8 @@ import '../../../Constants/Colors/app_colors.dart';
 class CustomBtn extends StatelessWidget {
   final String? btnText;
   final VoidCallback ? onpressed;
-  const CustomBtn({this.btnText,this.onpressed,Key? key}) : super(key: key);
+  final Color ? color;
+  const CustomBtn({this.btnText,this.onpressed,Key? key, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class CustomBtn extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color:btnColor,
+          color:color==null?btnColor:color,
         ),
         height: 56,
         child: Center(

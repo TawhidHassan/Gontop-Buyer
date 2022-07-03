@@ -7,8 +7,11 @@ import '../Bloc/User/user_cubit.dart';
 import '../Bloc/Wallet/wallet_cubit.dart';
 import '../Constants/Strings/app_strings.dart';
 import '../Presentation/Pages/Friends/find_friend.dart';
+import '../Presentation/Pages/Friends/friend_details.dart';
+import '../Presentation/Pages/Friends/friends_list.dart';
 import '../Presentation/Pages/Friends/requested_user_list.dart';
 import '../Presentation/Pages/Friends/user_details.dart';
+import '../Presentation/Pages/Friends/user_details_requetsed.dart';
 import '../Presentation/Pages/Login/login_page.dart';
 import '../Presentation/Pages/Wallet/payment_request_page.dart';
 import '../Presentation/Pages/Wallet/select_method_page.dart';
@@ -71,6 +74,45 @@ class AppRouter {
                 ),
               ],
               child:UserDetails(user: args!["user"]),
+            ));
+      case USER_DETAILS_REQUESTED:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<UserCubit>(
+                  create: (context) => UserCubit(),
+                ),
+                BlocProvider<FriendCubit>(
+                  create: (context) => FriendCubit(),
+                ),
+              ],
+              child:RequestedUserDetails(user: args!["user"],id: args["id"]),
+            ));
+      case FRIEND_DETAILS:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<UserCubit>(
+                  create: (context) => UserCubit(),
+                ),
+                BlocProvider<FriendCubit>(
+                  create: (context) => FriendCubit(),
+                ),
+              ],
+              child:FriendDetails(user: args!["user"]),
+            ));
+      case FRIEND_LIST:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<UserCubit>(
+                  create: (context) => UserCubit(),
+                ),
+                BlocProvider<FriendCubit>(
+                  create: (context) => FriendCubit(),
+                ),
+              ],
+              child:FriendListPage(),
             ));
       case FRIEND_REQUEST_LIST:
         return MaterialPageRoute(

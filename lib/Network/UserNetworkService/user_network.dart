@@ -95,5 +95,80 @@ class UserNetwork{
   }
 
 
+  Future getAllRequstedUser(String? token) async{
+    try{
+      var response = await http.get(
+        Uri.parse(BASE_URL + "friend-router/get-friends-request?limit=&pageNo="),
+        headers: {
+          "Authorization":"Bearer "+token!,
+          "Accept": "application/json"
+        },
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    }catch(e){
+      print(e);
+      return null;
+    }
 
+  }
+
+  Future acceptFriendRequest(String? token, Map<String, dynamic> data, String? id) async {
+    logger.d(data);
+    try {
+      var response = await http.post(
+        Uri.parse(BASE_URL + "friend-router/accept-request/"+id!),
+        headers: {
+          "Authorization": "Bearer " + token!,
+          "Content-type": "application/json",
+          "Accept": "application/json",
+        },
+        body: json.encode(data),
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future getAllFriends(String? token) async{
+    try{
+      var response = await http.get(
+        Uri.parse(BASE_URL + "friend-router/get-friends?limit=5&pageNo=1&search="),
+        headers: {
+          "Authorization":"Bearer "+token!,
+          "Accept": "application/json"
+        },
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    }catch(e){
+      print(e);
+      return null;
+    }
+
+  }
+
+
+  Future unfriend(String? token, Map<String, dynamic> data) async {
+    logger.d(data);
+    try {
+      var response = await http.post(
+        Uri.parse(BASE_URL + "friend-router/unfriend"),
+        headers: {
+          "Authorization": "Bearer " + token!,
+          "Content-type": "application/json",
+          "Accept": "application/json",
+        },
+        body: json.encode(data),
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }

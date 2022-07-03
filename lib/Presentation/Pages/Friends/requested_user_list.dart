@@ -48,6 +48,14 @@ class _FriendRequestListState extends State<FriendRequestList> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children:  [
+              Expanded(
+                  flex: 1,
+                  child: InkWell(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.arrow_back,color: Colors.white,)
+                  )),
               const Expanded(
                 flex: 18,
                 child: Center(
@@ -67,17 +75,18 @@ class _FriendRequestListState extends State<FriendRequestList> {
         width: MediaQuery.of(context).size.width,
         child: BlocBuilder<FriendCubit, FriendState>(
           builder: (context, state) {
-            if(state is !GetAllBuyerUsers){
+            if(state is !GetAllRequestedUsers){
               return Center(child: CircularProgressIndicator(color: Colors.white,),);
             }
-            final data=(state as GetAllBuyerUsers).userResponse;
+            final data=(state as GetAllRequestedUsers).requestedUserResponse;
             return ListView.builder(
-                itemCount: data!.length,
+                itemCount: data!.friends!.length,
                 itemBuilder:(context,index){
                   return InkWell(
                     onTap: (){
-                      Navigator.pushNamed(context, USER_DETAILS,arguments: {
-                        "user":data.data![index]
+                      Navigator.pushNamed(context, USER_DETAILS_REQUESTED,arguments: {
+                        "user":data.friends![index].userOne,
+                        "id":data.friends![index].id
                       });
                     },
                     child: Container(
@@ -93,18 +102,18 @@ class _FriendRequestListState extends State<FriendRequestList> {
                         children: [
                           Expanded(
                               flex: 2,
-                              child:data.data![index].image=="N/A"?CircleAvatar(
+                              child:data.friends![index].userOne!.image=="N/A"?CircleAvatar(
                                 radius:50,
-                                child: Text(data.data![index].name!=null?data.data![index].name![0]:"0"),
+                                child: Text(data.friends![index].userOne!.name!=null?data.friends![index].userOne!.name![0]:"0"),
                               ):
                               CircleAvatar(
                                 radius:50,
-                                backgroundImage:NetworkImage(data.data![index].image!),
+                                backgroundImage:NetworkImage(data.friends![index].userOne!.image!),
                               )
                           ),
                           Expanded(
                               flex: 8,
-                              child: Text(data.data![index].name??"No Name",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),)
+                              child: Text(data.friends![index].userOne!.name??"No Name",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),)
                           ),
                           Expanded(
                               flex: 1,

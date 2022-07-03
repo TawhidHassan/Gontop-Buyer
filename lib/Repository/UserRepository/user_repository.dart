@@ -1,6 +1,8 @@
 
 import 'dart:io';
 
+import 'package:gontop_buyer/Data/Model/Friend/FriendsList.dart';
+import 'package:gontop_buyer/Data/Model/Friend/RequestedUserResponse.dart';
 import 'package:gontop_buyer/Data/Model/RandomUser/RandomUserResponse.dart';
 import 'package:logger/logger.dart';
 
@@ -45,5 +47,40 @@ class UserRepository{
     // logger.d(Login.fromJson(userRaw));
     return userRaw;
   }
+
+  Future<RequestedUserResponse> getAllRequstedUser(String? token) async{
+    final userRaw=await userNetwork.getAllRequstedUser(token);
+    // logger.d(Login.fromJson(userRaw));
+
+    return RequestedUserResponse.fromJson(userRaw);
+  }
+
+
+  Future acceptFriendRequest(String? token, String? id, String status) async{
+    Map<String, dynamic> data = {
+      "request":status
+    };
+    final userRaw=await userNetwork.acceptFriendRequest(token,data,id);
+    // logger.d(Login.fromJson(userRaw));
+    return userRaw;
+  }
+
+  Future<FriendsList> getAllFriends(String? token) async{
+    final userRaw=await userNetwork.getAllFriends(token);
+    // logger.d(Login.fromJson(userRaw));
+
+    return FriendsList.fromJson(userRaw);
+  }
+
+  Future unfriend(String? token, String? id) async{
+    Map<String, dynamic> data = {
+      "friend": id
+    };
+    final userRaw=await userNetwork.unfriend(token,data);
+    // logger.d(Login.fromJson(userRaw));
+    return userRaw;
+  }
+
+
 
 }

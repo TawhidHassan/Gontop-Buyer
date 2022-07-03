@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive/hive.dart';
 
 import '../../../Bloc/Game/game_cubit.dart';
 import '../../../Constants/Colors/app_colors.dart';
@@ -83,6 +84,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           InkWell(
             onTap: (){
+              logOut(context);
             },
             child: Container(
               margin: EdgeInsets.only(right: 18),
@@ -119,7 +121,11 @@ class _HomePageState extends State<HomePage> {
                         Navigator.pushNamed(context, SELECT_PAYMENT_METHODS);
                       },
                       child: ServiceButton(title: "Add Fund",assets: "assets/icons/wallet.svg")),
-                  ServiceButton(title: "Send Fund",assets: "assets/icons/mailsend.svg"),
+                  InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, FRIEND_LIST);
+                      },
+                      child: ServiceButton(title: "Send Fund",assets: "assets/icons/mailsend.svg")),
                   ServiceButton(title: "My Orders",assets: "assets/icons/receiveicon.svg"),
                   ServiceButton(title: "Leaderboard",assets: "assets/icons/ranking.svg"),
                   ServiceButton(title: "Flash Deal",assets: "assets/icons/flash-sale.svg"),
@@ -171,4 +177,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+void logOut(BuildContext context) async {
+  var users = await Hive.openBox('users');
+  users.clear();
+  Navigator.pushReplacementNamed(context, LOGIN_PAGE);
 }
