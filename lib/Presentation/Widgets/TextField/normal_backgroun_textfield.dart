@@ -8,13 +8,14 @@ class MaterialTextFieldBackground extends StatelessWidget {
   final String hintText;
   final bool readOnly;
   final Icon icon;
-  MaterialTextFieldBackground({required this.lable,required this.controller, required this.hintText,required this.readOnly, required this.icon});
+  final Color? color;
+  MaterialTextFieldBackground({required this.lable,required this.controller, required this.hintText,required this.readOnly, required this.icon, this.color});
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
 
     return TextFormField(
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color:color==null? Colors.white:color),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please fillup';
@@ -26,7 +27,7 @@ class MaterialTextFieldBackground extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: icon,
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white),
+        hintStyle: TextStyle(color:color==null? Colors.white:color),
         contentPadding:
         EdgeInsets.symmetric(vertical: 20.0, horizontal: 12.0),
         border: OutlineInputBorder(

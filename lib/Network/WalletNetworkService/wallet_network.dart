@@ -30,7 +30,25 @@ class WalletNetwork{
     }
   }
 
-
+  Future unfriend(String? token, Map<String, dynamic> data) async {
+    logger.d(data);
+    try {
+      var response = await http.post(
+        Uri.parse(BASE_URL + "wallet-router/transfer"),
+        headers: {
+          "Authorization": "Bearer " + token!,
+          "Content-type": "application/json",
+          "Accept": "application/json",
+        },
+        body: json.encode(data),
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
 
 

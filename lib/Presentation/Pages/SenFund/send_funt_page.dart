@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
 
+import '../../../Bloc/FundTransfer/fund_transfer_cubit.dart';
 import '../../../Constants/Colors/app_colors.dart';
 import '../../../Data/Model/User/User.dart';
 import '../../../Service/LocalDataBase/localdata.dart';
 import '../../Widgets/Button/custom_btn.dart';
+import '../../Widgets/TextField/normal_backgroun_textfield.dart';
 
-class FriendDetails extends StatefulWidget {
+class SendFundPage extends StatefulWidget {
   final User? user;
-  const FriendDetails({Key? key, this.user}) : super(key: key);
+  const SendFundPage({Key? key, this.user}) : super(key: key);
+
   @override
-  _FriendDetailsState createState() => _FriendDetailsState();
+  _SendFundPageState createState() => _SendFundPageState();
 }
 
-class _FriendDetailsState extends State<FriendDetails> {
-  String? token;
+class _SendFundPageState extends State<SendFundPage> {
   bool? isLoading=false;
-  //storage instance
+  TextEditingController ammountController= TextEditingController();
+  TextEditingController messageController= TextEditingController();
+  String? token;
+  String? userId;
+  final _globalkey = GlobalKey<FormState>();
   LocalDataGet _localDataGet = LocalDataGet();
-
   getToken() async {
     var tokenx = await _localDataGet.getData();
     setState(() {
       token = tokenx.get('token');
-
+      userId = tokenx.get('userId');
       // Logger().d(token);
     });
   }
@@ -35,7 +39,6 @@ class _FriendDetailsState extends State<FriendDetails> {
     super.initState();
     getToken();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +46,7 @@ class _FriendDetailsState extends State<FriendDetails> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: kPrimaryColorx,
-        elevation: 2,
+        elevation: 1,
         title: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
@@ -60,7 +63,7 @@ class _FriendDetailsState extends State<FriendDetails> {
               const Expanded(
                 flex: 18,
                 child: Center(
-                  child: Text('User Details', style: TextStyle(
+                  child: Text('Transfer Money', style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -71,9 +74,9 @@ class _FriendDetailsState extends State<FriendDetails> {
           ),
         ),
       ),
-      body: BlocListener<FriendCubit, FriendState>(
+      body: BlocListener<FundTransferCubit, FundTransferState>(
         listener: (context, state) {
-          if(state is requestAcceptReject){
+          if(state is FundTransferDone){
             setState(() {
               isLoading=false;
               showAlertDialog(context);
@@ -81,57 +84,69 @@ class _FriendDetailsState extends State<FriendDetails> {
           }
         },
         child: Container(
-          margin: EdgeInsets.only(top: 20),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              widget.user!.image=="N/A"?CircleAvatar(
-                backgroundColor: Colors.white,
-                radius:30,
-                child: Text(widget.user!.name!=null?widget.user!.name![0]:"0"),
-              ):
-              CircleAvatar(
-                radius:50,
-                backgroundImage:NetworkImage(widget.user!.image!),
-              ),
-              SizedBox(height: 10,),
-              Text(widget.user!.name??"No Name",style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold),),
-              Text(widget.user!.email!,style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold),),
-              Text(widget.user!.phoneNumber!,style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold),),
-              SizedBox(height: 10,),
-              isLoading!?Center(child: CircularProgressIndicator(color: Colors.white,),):
               Container(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child:  Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        child: CustomBtn(
-                          color: Colors.redAccent,
-                          btnText: 'UnFriend',
-                          onpressed: (){
-                            setState(() {
-                              isLoading=true;
-                            });
-                            BlocProvider.of<FriendCubit>(context).unfriend(token,widget.user!.friendid);
-                          },
-                        ),
-                      ),)
-                  ],
+                padding: EdgeInsets.all(12),
+                margin: EdgeInsets.all(12),
+                decoration:  BoxDecoration(
+                    color: Color(0xFFFFFFFF),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color:Color(0xFFF88A44))
                 ),
-              )
+                child: Form(
+                  key: _globalkey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.user!.name!,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Color(0xFFF88A44)),),
+                      const SizedBox(height: 12),
+                      MaterialTextFieldBackground(hintText:"Enter Amount",
+                        readOnly: false,
+                        icon: const Icon(Icons.attach_money,
+                          color: Colors.black,),
+                        controller:ammountController,
+                        lable: '' ,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(height: 12,),
+                      MaterialTextFieldBackground(hintText:"Your message",
+                        readOnly: false,
+                        icon: const Icon(Icons.chat,
+                          color: Colors.black,),
+                        controller:messageController,
+                        lable: '' ,
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              isLoading!?Center(child: CircularProgressIndicator(color: Colors.white,),): Container(
+                margin: EdgeInsets.all(16),
+                child: CustomBtn(
+                  color: Colors.greenAccent,
+                  btnText: 'Transfer',
+                  onpressed: (){
+                    if (_globalkey.currentState!.validate()) {
+                      setState(() {
+                        isLoading=true;
+                      });
+                      BlocProvider.of<FundTransferCubit>(context).unfriend(token,userId,widget.user!.id,ammountController.text,messageController.text);
+                    }
 
+                  },
+                ),
+              ),
             ],
-
           ),
         ),
       ),
     );
   }
-
-
   showAlertDialog(BuildContext context) {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
@@ -147,7 +162,7 @@ class _FriendDetailsState extends State<FriendDetails> {
           children: [
             Image.asset('assets/icons/check_grren.png'),
             const Text("Done!",style: TextStyle(color: Color(0XFF000000),fontSize:30,fontWeight: FontWeight.w800 ),textAlign: TextAlign.center,),
-            const Text("You have successfully Done.",style: TextStyle(color: Color(0XFF000000),fontSize:16,fontWeight: FontWeight.w400 ),textAlign: TextAlign.center,),
+            const Text("You have successfully Transfer your Fund.",style: TextStyle(color: Color(0XFF000000),fontSize:16,fontWeight: FontWeight.w400 ),textAlign: TextAlign.center,),
             Padding(
                 padding: const EdgeInsets.all(16.0),
                 child:  InkWell(
@@ -180,5 +195,4 @@ class _FriendDetailsState extends State<FriendDetails> {
       },
     );
   }
-
 }

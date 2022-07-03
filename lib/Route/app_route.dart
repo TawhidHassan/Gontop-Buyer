@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
+import 'package:gontop_buyer/Bloc/FundTransfer/fund_transfer_cubit.dart';
 import '../Bloc/Login/login_cubit.dart';
 import '../Bloc/User/user_cubit.dart';
 import '../Bloc/Wallet/wallet_cubit.dart';
@@ -13,6 +14,7 @@ import '../Presentation/Pages/Friends/requested_user_list.dart';
 import '../Presentation/Pages/Friends/user_details.dart';
 import '../Presentation/Pages/Friends/user_details_requetsed.dart';
 import '../Presentation/Pages/Login/login_page.dart';
+import '../Presentation/Pages/SenFund/send_funt_page.dart';
 import '../Presentation/Pages/Wallet/payment_request_page.dart';
 import '../Presentation/Pages/Wallet/select_method_page.dart';
 import '../Presentation/Screens/SplashScreen/splash_screen.dart';
@@ -123,6 +125,16 @@ class AppRouter {
                 ),
               ],
               child:FriendRequestList(),
+            ));
+      case SEND_FUND_PAGE:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<FundTransferCubit>(
+                  create: (context) => FundTransferCubit(),
+                ),
+              ],
+              child:SendFundPage(user: args!["user"]),
             ));
       default:
         return MaterialPageRoute(

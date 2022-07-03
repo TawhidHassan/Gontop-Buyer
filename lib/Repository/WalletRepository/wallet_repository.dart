@@ -28,6 +28,17 @@ class WalletRepository{
     // logger.d(Login.fromJson(userRaw));
     return userRaw;
   }
+  Future  unfriend(String? token, String? userId, String? id, String ammount, String messege) async {
+    Map<String, dynamic> data = {
+      "transferfrom": userId,
+      "transferto": id,
+      "transferamount": num.parse(ammount),
+      "message": messege
+    };
+    final userRaw=await walletNetwork.unfriend(token,data);
+    // logger.d(Login.fromJson(userRaw));
+    return userRaw;
+  }
 
 
 }

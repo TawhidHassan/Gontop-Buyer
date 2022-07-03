@@ -97,7 +97,9 @@ class _FriendListPageState extends State<FriendListPage> {
                           flex: 9,
                           child: InkWell(
                             onTap: (){
-
+                              Navigator.pushNamed(context, SEND_FUND_PAGE,arguments: {
+                                "user":data.friends![index]
+                              });
                             },
                             child: Row(
                               children: [
@@ -120,17 +122,16 @@ class _FriendListPageState extends State<FriendListPage> {
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: (){
-                            Navigator.pushNamed(context, FRIEND_DETAILS,arguments: {
-                              "user":data.friends![index]
-                            });
-                          },
-                          child: const Expanded(
-                              flex: 1,
-                              child:Icon(Icons.arrow_forward_ios_outlined)
-                          ),
-                        )
+                        Expanded(
+                            flex: 1,
+                            child:InkWell(
+                                onTap: (){
+                                  Navigator.pushNamed(context, FRIEND_DETAILS,arguments: {
+                                    "user":data.friends![index]
+                                  });
+                                },
+                                child: Icon(Icons.arrow_forward_ios_outlined))
+                        ),
                       ],
                     ),
                   );;
