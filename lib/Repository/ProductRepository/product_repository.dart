@@ -38,4 +38,12 @@ class ProductRepository{
   }
 
 
+  Future<ProductResponse> getAllProductsGame(String? token, String? id) async{
+    final userRaw=await productNetwork.getAllProductsGame(token,id);
+    // logger.d(Login.fromJson(userRaw));
+
+    return ProductResponse.fromJson(userRaw);
+  }
+
+
 }

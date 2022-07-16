@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
 import 'package:gontop_buyer/Bloc/FundTransfer/fund_transfer_cubit.dart';
+import 'package:gontop_buyer/Bloc/Product/product_cubit.dart';
 import '../Bloc/Login/login_cubit.dart';
 import '../Bloc/User/user_cubit.dart';
 import '../Bloc/Wallet/wallet_cubit.dart';
@@ -14,6 +15,7 @@ import '../Presentation/Pages/Friends/requested_user_list.dart';
 import '../Presentation/Pages/Friends/user_details.dart';
 import '../Presentation/Pages/Friends/user_details_requetsed.dart';
 import '../Presentation/Pages/Login/login_page.dart';
+import '../Presentation/Pages/Products/game_page.dart';
 import '../Presentation/Pages/SenFund/send_funt_page.dart';
 import '../Presentation/Pages/Wallet/payment_request_page.dart';
 import '../Presentation/Pages/Wallet/select_method_page.dart';
@@ -135,6 +137,16 @@ class AppRouter {
                 ),
               ],
               child:SendFundPage(user: args!["user"]),
+            ));
+      case GAME_PRODUCTS:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<ProductCubit>(
+                  create: (context) => ProductCubit(),
+                ),
+              ],
+              child:UnderGameProduct(id: args!["id"]),
             ));
       default:
         return MaterialPageRoute(

@@ -10,3 +10,8 @@ class GetAllProduct extends ProductState {
 
   GetAllProduct({this.productResponse});
 }
+class GetAllGameProduct extends ProductState {
+  final ProductResponse? productResponse;
+
+  GetAllGameProduct({this.productResponse});
+}

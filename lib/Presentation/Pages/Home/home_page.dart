@@ -153,14 +153,21 @@ class _HomePageState extends State<HomePage> {
                           crossAxisCount:2,mainAxisSpacing: 10,crossAxisSpacing: 10),
 
                       itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          margin: EdgeInsets.all(2),
-                          height: 81,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                              image: NetworkImage(data.data![index].image!),
-                              fit: BoxFit.cover,
+                        return InkWell(
+                          onTap: (){
+                              Navigator.pushNamed(context, GAME_PRODUCTS,arguments: {
+                                "id":data.data![index].id!
+                              });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(2),
+                            height: 81,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: NetworkImage(data.data![index].image!),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         );
