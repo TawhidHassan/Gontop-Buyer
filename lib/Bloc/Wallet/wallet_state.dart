@@ -10,3 +10,8 @@ class WalletUser extends WalletState {
 
   WalletUser({this.walletResponse});
 }
+class OrderHistoryComplete extends WalletState {
+  final OrderResponse? orderResponse;
+
+  OrderHistoryComplete({this.orderResponse});
+}

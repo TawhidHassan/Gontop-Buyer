@@ -21,3 +21,9 @@ class GetAllFriends extends FriendState {
 
   GetAllFriends({this.friendsList});
 }
+
+class OrderHistoryCancel extends FriendState {
+  final OrderResponse? orderResponse;
+
+  OrderHistoryCancel({this.orderResponse});
+}

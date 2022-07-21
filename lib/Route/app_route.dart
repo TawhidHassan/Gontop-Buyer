@@ -17,6 +17,7 @@ import '../Presentation/Pages/Friends/user_details.dart';
 import '../Presentation/Pages/Friends/user_details_requetsed.dart';
 import '../Presentation/Pages/Login/login_page.dart';
 import '../Presentation/Pages/Orderpage/product_order.dart';
+import '../Presentation/Pages/Orderpage/user_orders.dart';
 import '../Presentation/Pages/Products/game_page.dart';
 import '../Presentation/Pages/SenFund/send_funt_page.dart';
 import '../Presentation/Pages/Wallet/payment_request_page.dart';
@@ -161,6 +162,18 @@ class AppRouter {
                 ),
               ],
               child:OrderPage(id: args!["id"],product: args['product'],),
+            ));
+      case ORDER_HISTORY_PAGE:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<ProductCubit>(
+                  create: (context) => ProductCubit(),
+                ),BlocProvider<OrderCubit>(
+                  create: (context) => OrderCubit(),
+                ),
+              ],
+              child:UserOrders(),
             ));
       default:
         return MaterialPageRoute(

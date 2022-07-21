@@ -52,8 +52,8 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Friends',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
+            icon: Icon(Icons.account_circle_rounded ),
+            label: 'Profile',
           ),
         ],
         currentIndex:_pageIndex,

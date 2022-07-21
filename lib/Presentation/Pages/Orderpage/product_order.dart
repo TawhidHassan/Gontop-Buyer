@@ -27,6 +27,7 @@ class _OrderPageState extends State<OrderPage> {
   TextEditingController fbPass= TextEditingController();
   bool? isLoading=false;
   String? token;
+  num? currentBalance=0;
   String? sellerId;
   String? userId;
   final _globalkey = GlobalKey<FormState>();
@@ -36,6 +37,7 @@ class _OrderPageState extends State<OrderPage> {
     setState(() {
       token = tokenx.get('token');
       userId = tokenx.get('userId');
+      BlocProvider.of<WalletCubit>(context).getUserWallet(token,userId);
       // Logger().d(token);
     });
   }
@@ -64,36 +66,44 @@ class _OrderPageState extends State<OrderPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Create Order"),
-              BlocBuilder<WalletCubit, WalletState>(
-                builder: (context, state) {
-                  if(state is !WalletUser){
-                    return Center(child: CircularProgressIndicator(color: Colors.blueAccent,),);
-                  }
-                  final data=(state as WalletUser).walletResponse;
-                  return InkWell(
-                    onTap: (){
-
-                    },
-                    child: Container(
-                      height: 30,
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Color(0xFFF88A44)
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset("assets/icons/shoppingcart.svg"),
-                          Text("My Gontop Balance ("+data!.userwallet!.currentbalance!.toString()+"Tk)",style: const TextStyle(
-                            fontSize: 14,fontWeight: FontWeight.w600,
-                          ),),
-                        ],
-                      ),
-                    ),
-                  );
+              BlocListener<WalletCubit, WalletState>(
+                listener: (context, state) {
+                  setState(() {
+                    final data=(state as WalletUser).walletResponse;
+                    currentBalance=data!.userwallet!.currentbalance;
+                  });
                 },
+                child: BlocBuilder<WalletCubit, WalletState>(
+                  builder: (context, state) {
+                    if(state is !WalletUser){
+                      return Center(child: CircularProgressIndicator(color: Colors.blueAccent,),);
+                    }
+                    final data=(state as WalletUser).walletResponse;
+                    return InkWell(
+                      onTap: (){
+
+                      },
+                      child: Container(
+                        height: 30,
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Color(0xFFF88A44)
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SvgPicture.asset("assets/icons/shoppingcart.svg"),
+                            Text("My Gontop Balance ("+data!.userwallet!.currentbalance!.toString()+"Tk)",style: const TextStyle(
+                              fontSize: 14,fontWeight: FontWeight.w600,
+                            ),),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               )
             ],
           ),
@@ -161,6 +171,7 @@ class _OrderPageState extends State<OrderPage> {
                   ),
                 ),
               ),
+              currentBalance!>=widget.product!.price!?Container():
               isLoading!? Center(child: CircularProgressIndicator(color: Colors.blueAccent,),):Container(
                 margin: EdgeInsets.only(bottom: 10,left: 10,right: 10),
                 child: CustomBtn(

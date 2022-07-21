@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:gontop_buyer/Network/WalletNetworkService/wallet_network.dart';
 import 'package:logger/logger.dart';
 
+import '../../Bloc/Order/order_cubit.dart';
+import '../../Data/Model/Order/OrderResponse.dart';
 import '../../Data/Model/Wallet/UserWalletResponse.dart';
 import '../../Network/OrderNetworkService/order_network.dart';
 
@@ -44,6 +46,12 @@ class OrderRepository{
 
     return userRaw;
   }
+
+ Future<OrderResponse> getUserOrders(String? token, String? userId, String status)async {
+   final userRaw=await orderNetwork.getUserOrders(token,userId,status);
+
+   return OrderResponse.fromJson(userRaw);
+ }
 
 
 

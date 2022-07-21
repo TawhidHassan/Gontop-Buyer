@@ -4,12 +4,15 @@ import 'package:gontop_buyer/Data/Model/Friend/RequestedUserResponse.dart';
 import 'package:gontop_buyer/Repository/UserRepository/user_repository.dart';
 import 'package:meta/meta.dart';
 
+import '../../Data/Model/Order/OrderResponse.dart';
 import '../../Data/Model/User/UserResponse.dart';
+import '../../Repository/OrderRepository/order_repository.dart';
 
 part 'friend_state.dart';
 
 class FriendCubit extends Cubit<FriendState> {
   UserRepository userRepository=UserRepository();
+  OrderRepository orderRepository=OrderRepository();
   FriendCubit() : super(FriendInitial());
 
   void getAllUser(String? token,String? role) {
@@ -56,6 +59,14 @@ class FriendCubit extends Cubit<FriendState> {
     userRepository.unfriend(token,id).then((value) => {
       if(value !=null){
         emit(requestAcceptReject())
+      }
+    });
+  }
+
+  void getUserOrders(String? token, String? userId, String status) {
+    orderRepository.getUserOrders(token,userId,status).then((value) {
+      if(value!=null){
+        emit(OrderHistoryCancel(orderResponse: value));
       }
     });
   }
