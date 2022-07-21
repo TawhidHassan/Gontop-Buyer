@@ -5,12 +5,13 @@ import 'package:gontop_buyer/Network/WalletNetworkService/wallet_network.dart';
 import 'package:logger/logger.dart';
 
 import '../../Data/Model/Wallet/UserWalletResponse.dart';
+import '../../Network/OrderNetworkService/order_network.dart';
 
 
 
-class WalletRepository{
+class OrderRepository{
   var logger = Logger();
-  WalletNetwork walletNetwork=WalletNetwork();
+  OrderNetwork orderNetwork=OrderNetwork();
 
 
   Future createwalletRequest(String? token, String? methos, String? sellerId, String? sellerphone, String? userId, String bkashNum, String transectioId, String ammount) async {
@@ -23,27 +24,27 @@ class WalletRepository{
       "transactionId": transectioId,
       "paymentType": methos
     };
-    final userRaw=await walletNetwork.createwalletRequest(token,data);
+    // final userRaw=await walletNetwork.createwalletRequest(token,data);
     // logger.d(Login.fromJson(userRaw));
-    return userRaw;
+    // return userRaw;
   }
-  Future  unfriend(String? token, String? userId, String? id, String ammount, String messege) async {
+
+  Future createOrder(String? token, String? productId, num price,String? gameId, String ign, String inGameName, String fbPass, String fbMaol) async{
     Map<String, dynamic> data = {
-      "transferfrom": userId,
-      "transferto": id,
-      "transferamount": num.parse(ammount),
-      "message": messege
+      "product": productId,
+      "orderPrice": price,
+      "gameId": gameId,
+      "gameName": inGameName,
+      "gid":ign,
+      "fbmail": fbMaol,
+      "fbpass": fbPass,
     };
-    final userRaw=await walletNetwork.unfriend(token,data);
-    // logger.d(Login.fromJson(userRaw));
+
+    final userRaw=await orderNetwork.createOrder(token,data);
+
     return userRaw;
   }
 
- Future<UserWalletResponse> getUserWallet(String? token, String? id) async{
-   final userRaw=await walletNetwork.getUserWallet(token,id);
-   // logger.d(Login.fromJson(userRaw));
-   return UserWalletResponse.fromJson(userRaw);
- }
 
 
 }

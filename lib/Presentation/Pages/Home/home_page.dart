@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gontop_buyer/Bloc/Wallet/wallet_cubit.dart';
 import 'package:hive/hive.dart';
 
 import '../../../Bloc/Game/game_cubit.dart';
@@ -21,6 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? token;
+  String? id;
 
   //storage instance
   LocalDataGet _localDataGet = LocalDataGet();
@@ -29,7 +31,9 @@ class _HomePageState extends State<HomePage> {
     var tokenx = await _localDataGet.getData();
     setState(() {
       token = tokenx.get('token');
+      id = tokenx.get('userId');
       BlocProvider.of<GameCubit>(context).getGames(token);
+      BlocProvider.of<WalletCubit>(context).getUserWallet(token,id);
       // Logger().d(token);
     });
   }
@@ -49,36 +53,44 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         title:  Align(
           alignment: Alignment.topLeft,
-          child: InkWell(
-            onTap: (){
+          child: BlocBuilder<WalletCubit, WalletState>(
+            builder: (context, state) {
+              if(state is !WalletUser){
+                return Center(child: CircularProgressIndicator(),);
+              }
+              final data=(state as WalletUser).walletResponse;
+              return InkWell(
+                onTap: (){
 
+                },
+                child: Container(
+                  height: 30,
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Color(0xFFF88A44)
+                  ),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset("assets/icons/shoppingcart.svg"),
+                       Text("My Gontop Balance ("+data!.userwallet!.currentbalance!.toString()+"Tk)",style: TextStyle(
+                        fontSize: 14,fontWeight: FontWeight.w600,
+                      ),),
+                      SizedBox(width: 6,),
+                      Container(
+                        height: 10,
+                        width: 10,
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Color(0xFF00EA5E)
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
             },
-            child: Container(
-              height: 30,
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Color(0xFFF88A44)
-              ),
-              child: Row(
-                children: [
-                  SvgPicture.asset("assets/icons/shoppingcart.svg"),
-                  const Text("My Gontop Balance (3000BDT)",style: TextStyle(
-                    fontSize: 14,fontWeight: FontWeight.w600,
-                  ),),
-                  SizedBox(width: 6,),
-                  Container(
-                    height: 10,
-                    width: 10,
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Color(0xFF00EA5E)
-                    ),
-                  )
-                ],
-              ),
-            ),
           ),
         )      ,
         actions: [
@@ -155,9 +167,9 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                           onTap: (){
-                              Navigator.pushNamed(context, GAME_PRODUCTS,arguments: {
-                                "id":data.data![index].id!
-                              });
+                            Navigator.pushNamed(context, GAME_PRODUCTS,arguments: {
+                              "id":data.data![index].id!
+                            });
                           },
                           child: Container(
                             margin: EdgeInsets.all(2),

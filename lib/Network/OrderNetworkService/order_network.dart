@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../../Constants/Strings/app_strings.dart';
 
-class WalletNetwork{
+class OrderNetwork{
   var logger = Logger();
 
 
@@ -30,11 +30,14 @@ class WalletNetwork{
     }
   }
 
-  Future unfriend(String? token, Map<String, dynamic> data) async {
+
+
+
+  Future createOrder(String? token, Map<String, dynamic> data) async {
     logger.d(data);
     try {
       var response = await http.post(
-        Uri.parse(BASE_URL + "wallet-router/transfer"),
+        Uri.parse(BASE_URL + "order-router"),
         headers: {
           "Authorization": "Bearer " + token!,
           "Content-type": "application/json",
@@ -49,27 +52,6 @@ class WalletNetwork{
       return null;
     }
   }
-
-
-  Future getUserWallet(String? token,String? id) async {
-
-    try {
-      var response = await http.get(
-        Uri.parse(BASE_URL + "wallet-router/user-wallet/"+id!),
-        headers: {
-          "Authorization": "Bearer " + token!,
-          "Content-type": "application/json",
-          "Accept": "application/json",
-        },
-      );
-      logger.d(response.body);
-      return jsonDecode(response.body);
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-
 
 
 

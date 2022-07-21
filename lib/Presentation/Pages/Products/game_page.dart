@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Bloc/Game/game_cubit.dart';
 import '../../../Bloc/Product/product_cubit.dart';
+import '../../../Constants/Strings/app_strings.dart';
 import '../../../Service/LocalDataBase/localdata.dart';
 
 class UnderGameProduct extends StatefulWidget {
@@ -55,7 +56,10 @@ class _UnderGameProductState extends State<UnderGameProduct> {
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onTap: (){
-
+                      Navigator.pushNamed(context, CREATE_ORDER_PAGE,arguments: {
+                        "id": data.data![index].id!,
+                        "product":data.data![index]
+                      });
                   },
                   child: Container(
                     padding: EdgeInsets.all(8),

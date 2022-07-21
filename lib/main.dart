@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
 import 'package:gontop_buyer/Bloc/Game/game_cubit.dart';
 import 'package:gontop_buyer/Bloc/Slider/slider_cubit.dart';
+import 'package:gontop_buyer/Bloc/Wallet/wallet_cubit.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:hive/hive.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<FriendCubit>(
           create: (context) => FriendCubit(),
+        ),
+        BlocProvider<WalletCubit>(
+          create: (context) => WalletCubit(),
         ),
       ],
       child: MaterialApp(
