@@ -181,7 +181,15 @@ class _OrderPageState extends State<OrderPage> {
                       setState(() {
                         isLoading=true;
                       });
-                      BlocProvider.of<OrderCubit>(context).createOrder(token,widget.product!.id!,widget.product!.price!,widget.product!.game!,ignController.text,inGameNamweController.text,fbMail.text,fbPass.text);
+                      BlocProvider.of<OrderCubit>(context).createOrder(
+                          token,
+                          widget.product!.id!,
+                          widget.product!.price!,
+                          widget.product!.game!,
+                          ignController.text,
+                          inGameNamweController.text,
+                          fbMail.text,
+                          fbPass.text);
 
                     }
                   },
