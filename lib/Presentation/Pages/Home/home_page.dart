@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: ServiceButton(title: "My Orders",assets: "assets/icons/receiveicon.svg")),
                   ServiceButton(title: "Leaderboard",assets: "assets/icons/ranking.svg"),
-                  ServiceButton(title: "Flash Deal",assets: "assets/icons/flash-sale.svg"),
+                  // ServiceButton(title: "Flash Deal",assets: "assets/icons/flash-sale.svg"),
                   ServiceButton(title: "Help",assets: "assets/icons/leader-bord.svg"),
                 ],
               ),
