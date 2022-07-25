@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gontop_buyer/Bloc/Chat/chat_cubit.dart';
 import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
 import 'package:gontop_buyer/Bloc/FundTransfer/fund_transfer_cubit.dart';
 import 'package:gontop_buyer/Bloc/Order/order_cubit.dart';
@@ -9,6 +10,7 @@ import '../Bloc/Login/login_cubit.dart';
 import '../Bloc/User/user_cubit.dart';
 import '../Bloc/Wallet/wallet_cubit.dart';
 import '../Constants/Strings/app_strings.dart';
+import '../Presentation/Pages/Chat/chat_page.dart';
 import '../Presentation/Pages/Friends/find_friend.dart';
 import '../Presentation/Pages/Friends/friend_details.dart';
 import '../Presentation/Pages/Friends/friends_list.dart';
@@ -174,6 +176,20 @@ class AppRouter {
                 ),
               ],
               child:UserOrders(),
+            ));
+      case USER_CHAT_PAGE:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<ProductCubit>(
+                  create: (context) => ProductCubit(),
+                ),BlocProvider<ChatCubit>(
+                  create: (context) => ChatCubit(),
+                ),BlocProvider<FriendCubit>(
+                  create: (context) => FriendCubit(),
+                ),
+              ],
+              child:ChatPage(userid: args!['id']),
             ));
       default:
         return MaterialPageRoute(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../Constants/Colors/app_colors.dart';
+import 'Chat/seller_list.dart';
 import 'Friends/find_friend.dart';
 import 'Home/home_page.dart';
 
@@ -25,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
           children:  <Widget>[
             HomePage(),
             FindFriendPage(),
-            HomePage(),
+            SellerListChat(),
             HomePage(),
           ],
           onPageChanged: (int index){
@@ -50,6 +51,10 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
             label: 'Friends',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat ),
+            label: 'Chat',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle_rounded ),

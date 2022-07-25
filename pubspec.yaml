@@ -48,6 +48,7 @@ dependencies:
   progress_state_button: ^1.0.3
   carousel_slider: ^4.0.0
   awesome_dialog: ^2.1.1
+  flutter_chat_ui: ^1.5.8
   flutter:
     sdk: flutter
 
