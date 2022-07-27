@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 
 import '../../Data/Model/Order/OrderResponse.dart';
 import '../../Data/Model/User/UserResponse.dart';
+import '../../Repository/ChatRepository/chat_repository.dart';
 import '../../Repository/OrderRepository/order_repository.dart';
 
 part 'friend_state.dart';
@@ -13,6 +14,7 @@ part 'friend_state.dart';
 class FriendCubit extends Cubit<FriendState> {
   UserRepository userRepository=UserRepository();
   OrderRepository orderRepository=OrderRepository();
+  ChatRepository chatRepository=ChatRepository();
   FriendCubit() : super(FriendInitial());
 
   void getAllUser(String? token,String? role) {
@@ -71,5 +73,20 @@ class FriendCubit extends Cubit<FriendState> {
     });
   }
 
+  void sendMessage(String? token, String? chatId, String text) {
+    chatRepository.sendMessage(token,chatId,text).then((value) {
+      if(value !=null){
+        emit(SendMessage());
+      }
+    });
+  }
+
+  void sendMessageImage(String? token, String? chatId, String path) {
+    chatRepository.sendMessageImage(token,chatId,path).then((value) {
+      if(value !=null){
+        emit(SendMessage());
+      }
+    });
+  }
 
 }

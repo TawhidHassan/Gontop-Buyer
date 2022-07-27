@@ -1,21 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ChatId.dart';
+part of 'Chats.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChatId _$ChatIdFromJson(Map<String, dynamic> json) => ChatId(
+Chats _$ChatsFromJson(Map<String, dynamic> json) => Chats(
       json['_id'] as String?,
+      json['content'] as String?,
+      json['sender'] == null
+          ? null
+          : User.fromJson(json['sender'] as Map<String, dynamic>),
       json['createdAt'] as String?,
-      (json['users'] as List<dynamic>?)
-          ?.map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
-Map<String, dynamic> _$ChatIdToJson(ChatId instance) => <String, dynamic>{
+Map<String, dynamic> _$ChatsToJson(Chats instance) => <String, dynamic>{
       '_id': instance.id,
+      'content': instance.content,
+      'sender': instance.sender,
       'createdAt': instance.createdAt,
-      'users': instance.users,
     };

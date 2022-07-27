@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 
 import '../../Data/Model/Catgory/CategoryResponse.dart';
 import '../../Data/Model/Chat/ChatIdResponse.dart';
+import '../../Data/Model/Chat/ChatsResponse.dart';
 
 class ChatRepository{
   var logger = Logger();
@@ -43,6 +44,31 @@ class ChatRepository{
     // logger.d(Login.fromJson(userRaw));
 
     return ChatIdResponse.fromJson(userRaw);
+  }
+
+ Future<ChatsResponse> getChats(String? token, String? id) async{
+   final userRaw=await chatNetwork.getChats(token,id);
+   // logger.d(Login.fromJson(userRaw));
+
+   return ChatsResponse.fromJson(userRaw);
+ }
+
+  Future sendMessage(String? token, String? chatId, String text) async{
+    Map<String, dynamic> data = {
+      "chatId": chatId,
+      "content":text
+    };
+    final userRaw=await chatNetwork.sendMessage(token,data);
+    // logger.d(Login.fromJson(userRaw));
+
+    return userRaw;
+  }
+
+  Future sendMessageImage(String? token, String? chatId, String path) async{
+    final userRaw=await chatNetwork.sendMessageImage(token,chatId,path);
+    // logger.d(Login.fromJson(userRaw));
+
+    return userRaw;
   }
 
 

@@ -2,6 +2,7 @@
 
 
 import 'package:gontop_buyer/Data/Model/Chat/ChatId.dart';
+import 'package:gontop_buyer/Data/Model/User/User.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 
@@ -13,6 +14,7 @@ class ChatIdResponse{
 
   String? message;
   ChatId? chat;
+
 
 
   ChatIdResponse(this.message, this.chat);

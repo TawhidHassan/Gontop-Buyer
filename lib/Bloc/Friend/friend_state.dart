@@ -27,3 +27,4 @@ class OrderHistoryCancel extends FriendState {
 
   OrderHistoryCancel({this.orderResponse});
 }
+class SendMessage extends FriendState {}

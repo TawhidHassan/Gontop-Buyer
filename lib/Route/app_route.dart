@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gontop_buyer/Bloc/Chat/chat_cubit.dart';
+import 'package:gontop_buyer/Bloc/Chat/chat_massages_cubit.dart';
 import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
 import 'package:gontop_buyer/Bloc/FundTransfer/fund_transfer_cubit.dart';
 import 'package:gontop_buyer/Bloc/Order/order_cubit.dart';
@@ -187,6 +188,8 @@ class AppRouter {
                   create: (context) => ChatCubit(),
                 ),BlocProvider<FriendCubit>(
                   create: (context) => FriendCubit(),
+                ),BlocProvider<ChatMassagesCubit>(
+                  create: (context) => ChatMassagesCubit(),
                 ),
               ],
               child:ChatPage(userid: args!['id']),

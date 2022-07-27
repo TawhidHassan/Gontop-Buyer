@@ -3,6 +3,8 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
+import '../User/User.dart';
+
 
 part 'ChatId.g.dart';
 
@@ -12,11 +14,10 @@ class ChatId{
   @JsonKey(name: "_id")
   String? id;
   String? createdAt;
+  List<User>? users;
 
 
-  ChatId(this.id, this.createdAt);
-
-
+  ChatId(this.id, this.createdAt, this.users);
 
   factory ChatId.fromJson(Map<String,dynamic>json)=>
       _$ChatIdFromJson(json);
