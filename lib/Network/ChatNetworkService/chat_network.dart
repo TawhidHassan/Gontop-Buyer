@@ -141,7 +141,7 @@ class ChatNetwork{
       request.headers.addAll(headers);
       request.fields['chatId'] = chatId!;
       request.files.add(await http.MultipartFile.fromPath('image', path));
-      request.fields['content'] = "";
+      request.fields['messagetype'] = "image";
       // logger.d(image.path);
       var streamedResponse =await request.send();
       var response = await http.Response.fromStream(streamedResponse);

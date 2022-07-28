@@ -7,6 +7,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:gontop_buyer/Bloc/Chat/chat_cubit.dart';
 import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
+import 'package:gontop_buyer/Constants/Colors/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -16,7 +17,8 @@ import '../../../Service/LocalDataBase/localdata.dart';
 
 class ChatPage extends StatefulWidget {
   final String? userid;
-  const ChatPage({Key? key, this.userid}) : super(key: key);
+  final String? userName;
+  const ChatPage({Key? key, this.userid, this.userName}) : super(key: key);
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -55,6 +57,9 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.userName!),
+      ),
       body: BlocConsumer<ChatCubit, ChatState>(
         listener: (context, state) {
           if(state is ChatIdGet){
@@ -82,7 +87,15 @@ class _ChatPageState extends State<ChatPage> {
                 for(var i=0;i<data!.messages!.length;i++){
                   final DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                   Logger().w(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(data.messages![i].createdAt!,true));
-                  Logger().w(data.messages![i].content!);
+                  data.messages![i].messagetype=="image"?  _messages.add(types.ImageMessage(
+                    author: _user!.id == data.messages![i].sender!.id! ? _user!:_user2!,
+                    createdAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(data.messages![i].createdAt!,true).millisecondsSinceEpoch,
+                    id: data.messages![i].id!,
+                    size: 0.0,
+                    name: "",
+                    uri:  data.messages![i].image!,
+                    showStatus: true,
+                  )):
                   _messages.add(types.TextMessage(
                     author: _user!.id == data.messages![i].sender!.id! ? _user!:_user2!,
                     createdAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(data.messages![i].createdAt!,true).millisecondsSinceEpoch,
@@ -98,6 +111,12 @@ class _ChatPageState extends State<ChatPage> {
                 return Center(child: CircularProgressIndicator(),);
               }
               return Chat(
+                theme: const DefaultChatTheme(
+                  inputBackgroundColor: kPrimaryColorx,
+                ),
+                l10n: const ChatL10nEn(
+                  inputPlaceholder: 'Type Here',
+                ),
                   onPreviewDataFetched: _handlePreviewDataFetched,
                   showUserAvatars: true,
                   showUserNames: true,

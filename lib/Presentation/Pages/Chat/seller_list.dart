@@ -76,7 +76,8 @@ class _SellerListChatState extends State<SellerListChat> {
                   return InkWell(
                     onTap: (){
                       Navigator.pushNamed(context, USER_CHAT_PAGE,arguments: {
-                        "id":data.data![index].id
+                        "id":data.data![index].id,
+                        "name":data.data![index].name,
                       });
                     },
                     child: Container(

@@ -56,7 +56,8 @@ class ChatRepository{
   Future sendMessage(String? token, String? chatId, String text) async{
     Map<String, dynamic> data = {
       "chatId": chatId,
-      "content":text
+      "content":text,
+      "messagetype":"text"
     };
     final userRaw=await chatNetwork.sendMessage(token,data);
     // logger.d(Login.fromJson(userRaw));

@@ -14,11 +14,14 @@ class Chats{
   @JsonKey(name: "_id")
   String? id;
   String? content;
+  String? messagetype;
+  String? image;
   User? sender;
   String? createdAt;
 
 
-  Chats(this.id, this.content, this.sender, this.createdAt);
+  Chats(this.id, this.content, this.messagetype, this.image, this.sender,
+      this.createdAt);
 
   factory Chats.fromJson(Map<String,dynamic>json)=>
       _$ChatsFromJson(json);
