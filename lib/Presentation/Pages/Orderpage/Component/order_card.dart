@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gontop_buyer/Constants/Colors/app_colors.dart';
 import 'package:gontop_buyer/Data/Model/Order/Order.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../Constants/Strings/app_strings.dart';
 class OrderCard extends StatelessWidget {
   final Order? order;
   const OrderCard({Key? key, this.order}) : super(key: key);
@@ -38,13 +40,21 @@ class OrderCard extends StatelessWidget {
                   Text("Created: "+StringExtension.displayTimeAgoFromTimestamp(order!.createdAt!),style: TextStyle(color: Color(0xFF8D8D8D),fontSize: 11),)
                 ],
               ),
-              Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    color: kPrimaryColorx,
-                    borderRadius: BorderRadius.circular(6)
+              InkWell(
+                onTap: (){
+                  Navigator.pushNamed(context, USER_CHAT_PAGE,arguments: {
+                    "id":order!.seller!.id!,
+                    "name":order!.seller!.name,
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: kPrimaryColorx,
+                      borderRadius: BorderRadius.circular(6)
+                  ),
+                  child: Text("Chat",style: TextStyle(color: Colors.white),),
                 ),
-                child: Text("Chat",style: TextStyle(color: Colors.white),),
               )
             ],
           ),

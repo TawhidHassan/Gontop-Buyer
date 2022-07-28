@@ -11,7 +11,9 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       orderStatus: json['orderStatus'] as String?,
       orderDate: json['orderDate'] as String?,
       orderPrice: json['orderPrice'] as num?,
-      buyerId: json['buyerId'] as String?,
+      buyerId: json['buyerId'] == null
+          ? null
+          : User.fromJson(json['buyerId'] as Map<String, dynamic>),
       product: json['product'] == null
           ? null
           : Product.fromJson(json['product'] as Map<String, dynamic>),

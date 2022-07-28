@@ -11,6 +11,11 @@ class GetAllBuyerUsers extends FriendState {
 
   GetAllBuyerUsers({this.userResponse});
 }
+class GetAllChatUsers extends FriendState {
+  final ChatUserResponse? chatUserResponse;
+
+  GetAllChatUsers({this.chatUserResponse});
+}
 class GetAllRequestedUsers extends FriendState {
   final RequestedUserResponse? requestedUserResponse;
 

@@ -16,7 +16,7 @@ class Order{
   String? orderStatus;
   String? orderDate;
   num? orderPrice;
-  String? buyerId;
+  User? buyerId;
   Product? product;
   User? seller;
   String? gameId;

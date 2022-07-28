@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../../Bloc/Friend/friend_cubit.dart';
 import '../../../Constants/Colors/app_colors.dart';
@@ -23,7 +24,7 @@ class _SellerListChatState extends State<SellerListChat> {
     var tokenx = await _localDataGet.getData();
     setState(() {
       token = tokenx.get('token');
-      BlocProvider.of<FriendCubit>(context).getAllUser(token, "SELLER");
+      BlocProvider.of<FriendCubit>(context).getAllUserChat(token);
       // Logger().d(token);
     });
   }
@@ -66,49 +67,59 @@ class _SellerListChatState extends State<SellerListChat> {
         width: MediaQuery.of(context).size.width,
         child: BlocBuilder<FriendCubit, FriendState>(
           builder: (context, state) {
-            if(state is !GetAllBuyerUsers){
+            if(state is !GetAllChatUsers){
               return Center(child: CircularProgressIndicator(color: Colors.white,),);
             }
-            final data=(state as GetAllBuyerUsers).userResponse;
+            final data=(state as GetAllChatUsers).chatUserResponse;
             return ListView.builder(
-                itemCount: data!.length,
+                itemCount: data!.user!.length,
                 itemBuilder:(context,index){
                   return InkWell(
                     onTap: (){
                       Navigator.pushNamed(context, USER_CHAT_PAGE,arguments: {
-                        "id":data.data![index].id,
-                        "name":data.data![index].name,
+                        "id":data.user![index].id,
+                        "name":data.user![index].name,
                       });
                     },
                     child: Container(
-                      height: 70,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: Colors.white,
                       ),
                       margin: EdgeInsets.symmetric(vertical: 4,horizontal: 12),
-                      padding: EdgeInsets.all(12),
+                      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 4),
                       width: MediaQuery.of(context).size.width,
                       child: Row(
                         children: [
                           Expanded(
                               flex: 2,
-                              child:data.data![index].image=="N/A"?CircleAvatar(
-                                radius:50,
-                                child: Text(data.data![index].name!=null?data.data![index].name![0]:"0"),
+                              child:data.user![index].image=="N/A"?CircleAvatar(
+                                radius:25,
+                                child: Text(data.user![index].name!=null?data.user![index].name![0]:"0"),
                               ):
                               CircleAvatar(
-                                radius:50,
-                                backgroundImage:NetworkImage(data.data![index].image!),
+                                radius:25,
+                                backgroundImage:NetworkImage(data.user![index].image!),
                               )
                           ),
                           Expanded(
                               flex: 8,
-                              child: Text(data.data![index].name??"No Name",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),)
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(data.user![index].name??"No Name",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
+                                  data.user![index].chats!=null? Text(data.user![index].chats!.messagetype=="text"?data.user![index].chats!.content!:"",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.normal,fontSize: 12),):Container(),
+                                  data.user![index].chats!=null? Text(data.user![index].chats!.messagetype=="text"?StringExtension.displayTimeAgoFromTimestamp(data.user![index].chats!.createdAt!):"",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.normal,fontSize: 12),):Container(),
+
+                                ],
+                              )
                           ),
-                          Expanded(
+                           Expanded(
                               flex: 1,
-                              child:Icon(Icons.arrow_forward_ios_outlined)
+                              child:CircleAvatar(
+                                radius: 5,
+                                backgroundColor:data.user![index].online!? Colors.green:Colors.grey,
+                              )
                           )
                         ],
                       ),
@@ -120,5 +131,53 @@ class _SellerListChatState extends State<SellerListChat> {
         ),
       ),
     );
+  }
+}
+extension StringExtension on String {
+  static String displayTimeAgoFromTimestamp(String  timestamp) {
+    print(timestamp+"xx");
+    DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(timestamp,true);
+    // var dateTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(, true);
+    print("dateLocal.toString()");
+    var dateLocal = parseDate.toLocal();
+    print(dateLocal.toString());
+    final year = int.parse(dateLocal.toString().substring(0, 4));
+    final month = int.parse(dateLocal.toString().substring(5, 7));
+    final day = int.parse(dateLocal.toString().substring(8, 10));
+    final hour = int.parse(dateLocal.toString().substring(11, 13));
+    final minute = int.parse(dateLocal.toString().substring(14, 16));
+
+    final DateTime videoDate = DateTime(year, month, day, hour, minute);
+    final int diffInHours = DateTime.now().difference(videoDate).inHours;
+
+    String timeAgo = '';
+    String timeUnit = '';
+    int timeValue = 0;
+
+    if (diffInHours < 1) {
+      final diffInMinutes = DateTime.now().difference(videoDate).inMinutes;
+      timeValue = diffInMinutes;
+      timeUnit = 'minute';
+    } else if (diffInHours < 24) {
+      timeValue = diffInHours;
+      timeUnit = 'hour';
+    } else if (diffInHours >= 24 && diffInHours < 24 * 7) {
+      timeValue = (diffInHours / 24).floor();
+      timeUnit = 'day';
+    } else if (diffInHours >= 24 * 7 && diffInHours < 24 * 30) {
+      timeValue = (diffInHours / (24 * 7)).floor();
+      timeUnit = 'week';
+    } else if (diffInHours >= 24 * 30 && diffInHours < 24 * 12 * 30) {
+      timeValue = (diffInHours / (24 * 30)).floor();
+      timeUnit = 'month';
+    } else {
+      timeValue = (diffInHours / (24 * 365)).floor();
+      timeUnit = 'year';
+    }
+
+    timeAgo = timeValue.toString() + ' ' + timeUnit;
+    timeAgo += timeValue > 1 ? 's' : '';
+
+    return timeAgo + ' ago';
   }
 }

@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:gontop_buyer/Data/Model/Chat/ChatUsers/ChatUserResponse.dart';
 import 'package:gontop_buyer/Data/Model/Friend/FriendsList.dart';
 import 'package:gontop_buyer/Data/Model/Friend/RequestedUserResponse.dart';
 import 'package:gontop_buyer/Data/Model/RandomUser/RandomUserResponse.dart';
@@ -79,6 +80,13 @@ class UserRepository{
     final userRaw=await userNetwork.unfriend(token,data);
     // logger.d(Login.fromJson(userRaw));
     return userRaw;
+  }
+
+  Future<ChatUserResponse> getAllUserChat(String? token) async{
+    final userRaw=await userNetwork.getAllUserChat(token);
+    // logger.d(Login.fromJson(userRaw));
+
+    return ChatUserResponse.fromJson(userRaw);
   }
 
 

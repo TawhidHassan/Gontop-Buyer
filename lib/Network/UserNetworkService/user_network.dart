@@ -171,4 +171,22 @@ class UserNetwork{
       return null;
     }
   }
+
+  Future getAllUserChat(String? token) async{
+    try{
+      var response = await http.get(
+        Uri.parse(BASE_URL + "chat-router/get-users"),
+        headers: {
+          "Authorization":"Bearer "+token!,
+          "Accept": "application/json"
+        },
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    }catch(e){
+      print(e);
+      return null;
+    }
+
+  }
 }

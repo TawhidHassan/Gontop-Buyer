@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:gontop_buyer/Data/Model/Chat/ChatUsers/ChatUserResponse.dart';
 import 'package:gontop_buyer/Data/Model/Friend/FriendsList.dart';
 import 'package:gontop_buyer/Data/Model/Friend/RequestedUserResponse.dart';
 import 'package:gontop_buyer/Repository/UserRepository/user_repository.dart';
@@ -89,4 +90,12 @@ class FriendCubit extends Cubit<FriendState> {
     });
   }
 
+
+  void getAllUserChat(String? token) {
+    userRepository.getAllUserChat(token).then((value) => {
+      if(value !=null){
+        emit(GetAllChatUsers(chatUserResponse:  value))
+      }
+    });
+  }
 }
