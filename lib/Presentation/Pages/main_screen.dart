@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../Constants/Colors/app_colors.dart';
+import '../../Service/LocalDataBase/localdata.dart';
 import 'Chat/seller_list.dart';
 import 'Friends/find_friend.dart';
 import 'Home/home_page.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  final IO.Socket? socket;
+
+  const MainScreen({Key? key, this.socket}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -16,6 +19,27 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _pageIndex = 0;
   final PageController _controller = PageController(initialPage: 0);
+
+
+  String? token;
+  String? userId;
+
+  //storage instance
+  LocalDataGet _localDataGet = LocalDataGet();
+
+  getToken() async {
+    var tokenx = await _localDataGet.getData();
+    setState(() {
+      userId = tokenx.get('userId');
+      // Logger().d(token);
+    });
+    socketSetup();
+  }
+  socketSetup()async{
+    // Logger().e("calling");
+    widget.socket!.emit("setup", {"_id":userId});
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

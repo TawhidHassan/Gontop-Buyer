@@ -32,4 +32,8 @@ class OrderHistoryCancel extends FriendState {
 
   OrderHistoryCancel({this.orderResponse});
 }
-class SendMessage extends FriendState {}
+class SendMessage extends FriendState {
+  final dynamic data;
+
+  SendMessage({this.data});
+}

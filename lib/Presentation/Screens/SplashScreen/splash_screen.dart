@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../../../Constants/Strings/app_strings.dart';
 import '../../../Service/LocalDataBase/localdata.dart';
 import '../../Pages/main_screen.dart';
@@ -11,7 +12,9 @@ import '../../Pages/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
 
+  final IO.Socket? socket;
 
+  SplashScreen({this.socket});
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -52,6 +55,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
+    _connectSocket();
     checkLogin();
     _controller =
         AnimationController(vsync: this, duration: Duration(seconds: 3));
@@ -82,14 +86,18 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     Timer(Duration(seconds: 4), () {
       setState(() {
         isLogin?
-        Navigator.pushReplacement(context, PageTransition(MainScreen())): Navigator.pushReplacementNamed(
+        Navigator.pushReplacement(context, PageTransition(MainScreen(socket: widget.socket,))): Navigator.pushReplacementNamed(
             context, LOGIN_PAGE);
         // isLogin?
         // Navigator.pushReplacement(context, PageTransition(MainScreen())):Navigator.pushReplacement(context, PageTransition(MainScreen()));
       });
     });
   }
-
+  _connectSocket() {
+    widget.socket!.onConnect((data) =>Logger().i('Connection established'));
+    widget.socket!.onConnectError((data) => Logger().e('Connect Error: $data'));
+    widget.socket!.onDisconnect((data) => Logger().w('Socket.IO server disconnected'));
+  }
   @override
   void dispose() {
     _controller.dispose();

@@ -3,6 +3,7 @@ import 'package:gontop_buyer/Data/Model/Chat/ChatUsers/ChatUserResponse.dart';
 import 'package:gontop_buyer/Data/Model/Friend/FriendsList.dart';
 import 'package:gontop_buyer/Data/Model/Friend/RequestedUserResponse.dart';
 import 'package:gontop_buyer/Repository/UserRepository/user_repository.dart';
+import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
 import '../../Data/Model/Order/OrderResponse.dart';
@@ -77,7 +78,8 @@ class FriendCubit extends Cubit<FriendState> {
   void sendMessage(String? token, String? chatId, String text) {
     chatRepository.sendMessage(token,chatId,text).then((value) {
       if(value !=null){
-        emit(SendMessage());
+        Logger().e(value['message']);
+        emit(SendMessage(data: value));
       }
     });
   }

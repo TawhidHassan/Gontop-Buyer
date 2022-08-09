@@ -11,14 +11,15 @@ import 'package:gontop_buyer/Constants/Colors/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../../../Bloc/Chat/chat_massages_cubit.dart';
 import '../../../Service/LocalDataBase/localdata.dart';
 
 class ChatPage extends StatefulWidget {
   final String? userid;
   final String? userName;
-  const ChatPage({Key? key, this.userid, this.userName}) : super(key: key);
+  final IO.Socket? socket;
+  const ChatPage({Key? key, this.userid, this.userName, this.socket}) : super(key: key);
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -43,17 +44,23 @@ class _ChatPageState extends State<ChatPage> {
       BlocProvider.of<ChatCubit>(context).getChatId(token,widget.userid);
       // Logger().d(token);
     });
+    socketSetup();
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-
     getToken();
-  }
 
+  }
+  socketSetup()async{
+    Logger().e("calling");
+    widget.socket!.on("message recieved", (data) => {
+      Logger().w(data)
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +74,8 @@ class _ChatPageState extends State<ChatPage> {
               final data=(state as ChatIdGet).chatIdResponse;
               chatId=data!.chat!.id;
               Logger().e(chatId);
+              ///join chat room
+              widget.socket!.emit("join chat", chatId);
               _user= types.User(id: data.chat!.users![0].id!,firstName: data.chat!.users![0].name! ,imageUrl: data.chat!.users![0].image,);
               _user2= types.User(id: data.chat!.users![1].id!,firstName: data.chat!.users![1].name! ,imageUrl: data.chat!.users![1].image,);
               BlocProvider.of<ChatMassagesCubit>(context).getChats(token,data.chat!.id);
@@ -77,7 +86,7 @@ class _ChatPageState extends State<ChatPage> {
         },
         builder: (context, state) {
           if(state is !ChatIdGet){
-            return Center(child: CircularProgressIndicator(),);
+            return Center(child: CircularProgressIndicator(color: Colors.redAccent,),);
           }
 
           return BlocConsumer<ChatMassagesCubit, ChatMassagesState>(
@@ -86,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
                 final data=(state as GetMessage).chatsResponse;
                 for(var i=0;i<data!.messages!.length;i++){
                   final DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                  Logger().w(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(data.messages![i].createdAt!,true));
+                  // Logger().w(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(data.messages![i].createdAt!,true));
                   data.messages![i].messagetype=="image"?  _messages.add(types.ImageMessage(
                     author: _user!.id == data.messages![i].sender!.id! ? _user!:_user2!,
                     createdAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(data.messages![i].createdAt!,true).millisecondsSinceEpoch,
@@ -110,13 +119,19 @@ class _ChatPageState extends State<ChatPage> {
               if(state is !GetMessage){
                 return Center(child: CircularProgressIndicator(),);
               }
-              return Chat(
-                theme: const DefaultChatTheme(
-                  inputBackgroundColor: kPrimaryColorx,
-                ),
-                l10n: const ChatL10nEn(
-                  inputPlaceholder: 'Type Here',
-                ),
+              return BlocListener<FriendCubit, FriendState>(
+                listener: (context, state) {
+                  final data=(state as SendMessage).data;
+                  ///send socket event for msg
+                  widget.socket!.emit("new message", data['message']);
+                },
+                child: Chat(
+                  theme: const DefaultChatTheme(
+                    inputBackgroundColor: kPrimaryColorx,
+                  ),
+                  l10n: const ChatL10nEn(
+                    inputPlaceholder: 'Type Here',
+                  ),
                   onPreviewDataFetched: _handlePreviewDataFetched,
                   showUserAvatars: true,
                   showUserNames: true,
@@ -124,8 +139,9 @@ class _ChatPageState extends State<ChatPage> {
                   onSendPressed: _handleSendPressed,
                   user: _user!,
                   usePreviewData:true,
-                onAttachmentPressed: _handleImageSelection,
+                  onAttachmentPressed: _handleImageSelection,
 
+                ),
               );
             },
           );

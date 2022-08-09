@@ -26,13 +26,17 @@ import '../Presentation/Pages/SenFund/send_funt_page.dart';
 import '../Presentation/Pages/Wallet/payment_request_page.dart';
 import '../Presentation/Pages/Wallet/select_method_page.dart';
 import '../Presentation/Screens/SplashScreen/splash_screen.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class AppRouter {
+  final IO.Socket socket;
+
+  AppRouter({required this.socket});
   Route? generateRoute(RouteSettings settings) {
     final Map? args = settings.arguments as Map?;
     switch (settings.name) {
       case "/":
-        return MaterialPageRoute(builder: (_) => SplashScreen());
+        return MaterialPageRoute(builder: (_) => SplashScreen(socket: socket));
       case LOGIN_PAGE:
         return MaterialPageRoute(
             builder: (BuildContext context) => BlocProvider(
@@ -192,7 +196,7 @@ class AppRouter {
                   create: (context) => ChatMassagesCubit(),
                 ),
               ],
-              child:ChatPage(userid: args!['id'],userName: args["name"],),
+              child:ChatPage(userid: args!['id'],userName: args["name"],socket: socket),
             ));
       default:
         return MaterialPageRoute(

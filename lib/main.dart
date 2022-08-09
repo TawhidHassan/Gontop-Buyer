@@ -10,14 +10,15 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'Bloc/Login/login_cubit.dart';
 import 'Bloc/User/user_cubit.dart';
 import 'Constants/Colors/app_colors.dart';
 import 'Route/app_route.dart';
 
 void main() async{
-  //HttpOverrides.global =  MyHttpOverrides();
+  IO.Socket _socket;
+  HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   Directory directory = await pathProvider.getApplicationDocumentsDirectory();
   HydratedBloc.storage = await HydratedStorage.build(
@@ -25,9 +26,13 @@ void main() async{
   );
   Hive.init(directory.path);
   await Hive.openBox('users');
+  _socket = IO.io(
+    'https://gontop.herokuapp.com',
+    IO.OptionBuilder().setTransports(['websocket']).build(),
+  );
   runApp(
       MyApp(
-        router: AppRouter(),
+        router: AppRouter(socket: _socket),
       ));
 }
 
@@ -72,11 +77,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// class MyHttpOverrides extends HttpOverrides{
-//   @override
-//   HttpClient createHttpClient(SecurityContext? context) {
-//
-//     return super.createHttpClient(context) ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-//   }
-// }
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+
+    return super.createHttpClient(context) ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
 
