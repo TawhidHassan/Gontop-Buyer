@@ -7,6 +7,7 @@ import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
 import 'package:gontop_buyer/Bloc/FundTransfer/fund_transfer_cubit.dart';
 import 'package:gontop_buyer/Bloc/Order/order_cubit.dart';
 import 'package:gontop_buyer/Bloc/Product/product_cubit.dart';
+import 'package:gontop_buyer/Presentation/Pages/Login/signup_page.dart';
 import '../Bloc/Login/login_cubit.dart';
 import '../Bloc/User/user_cubit.dart';
 import '../Bloc/Wallet/wallet_cubit.dart';
@@ -42,6 +43,12 @@ class AppRouter {
             builder: (BuildContext context) => BlocProvider(
               create: (context) => LoginCubit(),
               child: LoginPage(),
+            ));
+      case SIGNUP_PAGE:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => BlocProvider(
+              create: (context) => LoginCubit(),
+              child: SignUpPage(),
             ));
       case SELECT_PAYMENT_METHODS:
         return MaterialPageRoute(

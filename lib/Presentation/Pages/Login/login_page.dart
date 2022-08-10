@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                                   color:boldTextColor
                               ),),
                               const SizedBox(height: 8),
-                              const Text('Log in to your account',style: TextStyle(
+                              const Text('Signup to your account',style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color:lightTextColor
@@ -141,6 +141,16 @@ class _LoginPageState extends State<LoginPage> {
 
 
                                   },
+                                ),
+                              ),
+                              SizedBox(height: 12,),
+                              Align(
+                                alignment:Alignment.bottomCenter,
+                                child: InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(context, SIGNUP_PAGE);
+                                    },
+                                    child:  Text("Want To Create Account!",style: const TextStyle(color: btnColor,fontSize: 14,fontWeight: FontWeight.w500),)
                                 ),
                               ),
                             ],

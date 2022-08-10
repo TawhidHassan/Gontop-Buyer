@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
@@ -20,6 +22,12 @@ class LoginCubit extends Cubit<LoginState> {
       }
     });
   }
-
+  void signUp(String name, String email, String phone, String password, File? image) {
+    loginRepository.signUp( name,email,phone,password,image).then((value) => {
+      if(value !=null){
+        emit(LoginUser(login: value))
+      }
+    });
+  }
 
 }

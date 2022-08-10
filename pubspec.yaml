@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   new_version: ^0.3.0
+  flutter_image_compress: ^1.1.0
   intl: 0.17.0
   logger: ^1.0.0
   http: ^0.13.4
