@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:gontop_buyer/Bloc/Chat/chat_cubit.dart';
-import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
-import 'package:gontop_buyer/Constants/Colors/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import '../../../Bloc/Chat/chat_massages_cubit.dart';
-import '../../../Service/LocalDataBase/localdata.dart';
 
+import '../../../Bloc/Chat/chat_cubit.dart';
+import '../../../Bloc/Chat/chat_massages_cubit.dart';
+import '../../../Bloc/Friend/friend_cubit.dart';
+import '../../../Constants/Colors/app_colors.dart';
+import '../../../Service/LocalDataBase/localdata.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 class ChatPage extends StatefulWidget {
   final String? userid;
   final String? userName;
   final IO.Socket? socket;
-  const ChatPage({Key? key, this.userid, this.userName, this.socket}) : super(key: key);
+  const ChatPage({ this.userid, this.userName, this.socket});
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -33,6 +33,7 @@ class _ChatPageState extends State<ChatPage> {
 
   String? token;
   String? chatId;
+  String? typeingtext;
 
   //storage instance
   LocalDataGet _localDataGet = LocalDataGet();
@@ -50,22 +51,67 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     getToken();
+    super.initState();
 
   }
-  socketSetup()async{
+  socketSetup(){
     Logger().e("calling");
+    types.TextMessage? textMessage;
+    types.ImageMessage? imageMessage;
     widget.socket!.on("message recieved", (data) => {
-      Logger().w(data)
+      Logger().w(data),
+      data['messagetype']=="image"? imageMessage = types.ImageMessage(
+        author: _user2!,
+        createdAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(data['createdAt'],true).millisecondsSinceEpoch,
+        id: data['_id'],
+        size: 0.0,
+        name: "",
+        uri:  data['image'],
+        showStatus: true,
+      ): textMessage = types.TextMessage(
+        author: _user2!,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: randomString(),
+        text: data['content'],
+      ),
+
+      if(mounted) _addMessage(data['messagetype']=="image"?imageMessage!:textMessage!)
+    });
+    widget.socket!.on("typing", (room) {
+      if(mounted) setState(() {
+        typeingtext="Typing";
+      });
     });
 
+    widget.socket!.on("stop typing", (room){
+      Logger().e("stopp type listing");
+      if(mounted) setState(() {
+        typeingtext=null;
+
+      });
+    });
+
+  }
+
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.userName!),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.userName!),
+            Text(typeingtext??"",style: TextStyle(fontSize: 9,color: Colors.white),),
+          ],
+        ),
       ),
       body: BlocConsumer<ChatCubit, ChatState>(
         listener: (context, state) {
@@ -74,8 +120,10 @@ class _ChatPageState extends State<ChatPage> {
               final data=(state as ChatIdGet).chatIdResponse;
               chatId=data!.chat!.id;
               Logger().e(chatId);
+
               ///join chat room
               widget.socket!.emit("join chat", chatId);
+
               _user= types.User(id: data.chat!.users![0].id!,firstName: data.chat!.users![0].name! ,imageUrl: data.chat!.users![0].image,);
               _user2= types.User(id: data.chat!.users![1].id!,firstName: data.chat!.users![1].name! ,imageUrl: data.chat!.users![1].image,);
               BlocProvider.of<ChatMassagesCubit>(context).getChats(token,data.chat!.id);
@@ -86,7 +134,7 @@ class _ChatPageState extends State<ChatPage> {
         },
         builder: (context, state) {
           if(state is !ChatIdGet){
-            return Center(child: CircularProgressIndicator(color: Colors.redAccent,),);
+            return Center(child: CircularProgressIndicator(),);
           }
 
           return BlocConsumer<ChatMassagesCubit, ChatMassagesState>(
@@ -123,10 +171,12 @@ class _ChatPageState extends State<ChatPage> {
                 listener: (context, state) {
                   final data=(state as SendMessage).data;
                   ///send socket event for msg
-                  widget.socket!.emit("new message", data['message']);
+                  Logger().i({data['message'],chatId});
+                  widget.socket!.emit("new message", {data['message'],chatId});
+                  widget.socket!.emit("stop typing", chatId);
                 },
                 child: Chat(
-                  theme: const DefaultChatTheme(
+                  theme:  DefaultChatTheme(
                     inputBackgroundColor: kPrimaryColorx,
                   ),
                   l10n: const ChatL10nEn(
@@ -134,6 +184,7 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   onPreviewDataFetched: _handlePreviewDataFetched,
                   showUserAvatars: true,
+                  onTextChanged: _ontypeIng,
                   showUserNames: true,
                   messages: _messages,
                   onSendPressed: _handleSendPressed,
@@ -149,7 +200,10 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
+  void _ontypeIng(String text) {
+    widget.socket!.emit("typing", chatId);
 
+  }
 
   void _handleImageSelection() async {
     final result = await ImagePicker().pickImage(
@@ -172,16 +226,12 @@ class _ChatPageState extends State<ChatPage> {
         uri: result.path,
         width: image.width.toDouble(),
       );
-
       _addMessage(message);
       BlocProvider.of<FriendCubit>(context).sendMessageImage(token,chatId,result.path);
     }
   }
 
-  void _handlePreviewDataFetched(
-      types.TextMessage message,
-      types.PreviewData previewData,
-      ) {
+  void _handlePreviewDataFetched(types.TextMessage message, types.PreviewData previewData,) {
     final index = _messages.indexWhere((element) => element.id == message.id);
     final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
       previewData: previewData,
@@ -204,7 +254,6 @@ class _ChatPageState extends State<ChatPage> {
       id: randomString(),
       text: message.text,
     );
-
     _addMessage(textMessage);
     BlocProvider.of<FriendCubit>(context).sendMessage(token,chatId,message.text);
   }

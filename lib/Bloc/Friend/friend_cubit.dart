@@ -87,7 +87,7 @@ class FriendCubit extends Cubit<FriendState> {
   void sendMessageImage(String? token, String? chatId, String path) {
     chatRepository.sendMessageImage(token,chatId,path).then((value) {
       if(value !=null){
-        emit(SendMessage());
+        emit(SendMessage(data: value));
       }
     });
   }
