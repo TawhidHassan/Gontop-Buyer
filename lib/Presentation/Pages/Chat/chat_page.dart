@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -52,6 +53,7 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     // TODO: implement initState
     getToken();
+
     super.initState();
 
   }
@@ -79,18 +81,30 @@ class _ChatPageState extends State<ChatPage> {
       if(mounted) _addMessage(data['messagetype']=="image"?imageMessage!:textMessage!)
     });
     widget.socket!.on("typing", (room) {
-      if(mounted) setState(() {
-        typeingtext="Typing";
-      });
+      if(mounted) {
+        setState(() {
+          typeingtext="Typing...";
+
+        });
+      }
     });
 
     widget.socket!.on("stop typing", (room){
       Logger().e("stopp type listing");
-      if(mounted) setState(() {
-        typeingtext=null;
+      if(mounted) {
+        setState(() {
+          typeingtext=null;
 
-      });
+        });
+      }
     });
+
+    widget.socket!.onConnect((data) {
+      Logger().i('Connection established chat page');
+      widget.socket!.emit("join chat", chatId);
+    });
+
+
 
   }
 
@@ -173,7 +187,7 @@ class _ChatPageState extends State<ChatPage> {
                   ///send socket event for msg
                   Logger().i({data['message'],chatId});
                   widget.socket!.emit("new message", {data['message'],chatId});
-                  widget.socket!.emit("stop typing", chatId);
+
                 },
                 child: Chat(
                   theme:  DefaultChatTheme(
@@ -191,7 +205,6 @@ class _ChatPageState extends State<ChatPage> {
                   user: _user!,
                   usePreviewData:true,
                   onAttachmentPressed: _handleImageSelection,
-
                 ),
               );
             },
@@ -202,7 +215,6 @@ class _ChatPageState extends State<ChatPage> {
   }
   void _ontypeIng(String text) {
     widget.socket!.emit("typing", chatId);
-
   }
 
   void _handleImageSelection() async {
@@ -256,6 +268,7 @@ class _ChatPageState extends State<ChatPage> {
     );
     _addMessage(textMessage);
     BlocProvider.of<FriendCubit>(context).sendMessage(token,chatId,message.text);
+    widget.socket!.emit("stop typing", chatId);
   }
 }
 String randomString() {

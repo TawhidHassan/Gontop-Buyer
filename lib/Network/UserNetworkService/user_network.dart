@@ -189,4 +189,22 @@ class UserNetwork{
     }
 
   }
+  Future getLeaderBoard(String? token) async{
+    Logger().e(BASE_URL + "order-router/leader-board?pageNo=0&limit=0");
+    try{
+      var response = await http.get(
+        Uri.parse(BASE_URL + "order-router/leader-board?pageNo=0&limit=0"),
+        headers: {
+          "Authorization":"Bearer "+token!,
+          "Accept": "application/json"
+        },
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    }catch(e){
+      print(e);
+      return null;
+    }
+
+  }
 }

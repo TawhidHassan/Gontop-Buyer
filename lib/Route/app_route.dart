@@ -5,6 +5,7 @@ import 'package:gontop_buyer/Bloc/Chat/chat_cubit.dart';
 import 'package:gontop_buyer/Bloc/Chat/chat_massages_cubit.dart';
 import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
 import 'package:gontop_buyer/Bloc/FundTransfer/fund_transfer_cubit.dart';
+import 'package:gontop_buyer/Bloc/LeaderBoard/leader_board_cubit.dart';
 import 'package:gontop_buyer/Bloc/Order/order_cubit.dart';
 import 'package:gontop_buyer/Bloc/Product/product_cubit.dart';
 import 'package:gontop_buyer/Presentation/Pages/Login/signup_page.dart';
@@ -19,6 +20,7 @@ import '../Presentation/Pages/Friends/friends_list.dart';
 import '../Presentation/Pages/Friends/requested_user_list.dart';
 import '../Presentation/Pages/Friends/user_details.dart';
 import '../Presentation/Pages/Friends/user_details_requetsed.dart';
+import '../Presentation/Pages/LeaderBoard/leader_borad_page.dart';
 import '../Presentation/Pages/Login/login_page.dart';
 import '../Presentation/Pages/Orderpage/product_order.dart';
 import '../Presentation/Pages/Orderpage/user_orders.dart';
@@ -176,6 +178,16 @@ class AppRouter {
                 ),
               ],
               child:OrderPage(id: args!["id"],product: args['product'],),
+            ));
+        case LEADER_BOARD_PAGE:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<LeaderBoardCubit>(
+                  create: (context) => LeaderBoardCubit(),
+                )
+              ],
+              child:LeaderBoardPage(),
             ));
       case ORDER_HISTORY_PAGE:
         return MaterialPageRoute(

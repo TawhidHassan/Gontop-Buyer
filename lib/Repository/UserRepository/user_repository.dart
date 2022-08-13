@@ -7,6 +7,7 @@ import 'package:gontop_buyer/Data/Model/Friend/RequestedUserResponse.dart';
 import 'package:gontop_buyer/Data/Model/RandomUser/RandomUserResponse.dart';
 import 'package:logger/logger.dart';
 
+import '../../Data/LeaderBorad/LeaderBoardResponse.dart';
 import '../../Data/Model/Login/Login.dart';
 import '../../Data/Model/User/UserResponse.dart';
 import '../../Network/GameNetworkService/game_network.dart';
@@ -87,6 +88,12 @@ class UserRepository{
     // logger.d(Login.fromJson(userRaw));
 
     return ChatUserResponse.fromJson(userRaw);
+  }
+  Future<LeaderBoardResponse> getLeaderBoard(String? token) async{
+    final userRaw=await userNetwork.getLeaderBoard(token);
+    // logger.d(Login.fromJson(userRaw));
+
+    return LeaderBoardResponse.fromJson(userRaw);
   }
 
 
