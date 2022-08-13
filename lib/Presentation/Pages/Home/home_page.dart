@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                 return Center(child: CircularProgressIndicator(),);
               }
               final data=(state as WalletUser).walletResponse;
-              return InkWell(
+              return data!.userwallet!=null? InkWell(
                 onTap: (){
 
                 },
@@ -73,8 +73,7 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     children: [
                       SvgPicture.asset("assets/icons/shoppingcart.svg"),
-                       Text("My Gontop Balance ("+data!.userwallet!.currentbalance!.toString()+"Tk)",style: TextStyle(
-                        fontSize: 14,fontWeight: FontWeight.w600,
+                       Text("My Gontop Balance ("+data.userwallet!.currentbalance!.toString()+"Tk)",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,
                       ),),
                       SizedBox(width: 6,),
                       Container(
@@ -89,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-              );
+              ):Container();
             },
           ),
         )      ,

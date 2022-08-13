@@ -11,10 +11,11 @@ part 'UserWalletResponse.g.dart';
 class UserWalletResponse{
 
       String? status;
+      String? message;
       Wallet? userwallet;
 
 
-      UserWalletResponse(this.status, this.userwallet);
+      UserWalletResponse(this.status, this.message, this.userwallet);
 
   factory UserWalletResponse.fromJson(Map<String,dynamic>json)=>
           _$UserWalletResponseFromJson(json);
