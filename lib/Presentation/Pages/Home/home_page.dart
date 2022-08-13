@@ -23,6 +23,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? token;
   String? id;
+  String? image;
+  String? name;
 
   //storage instance
   LocalDataGet _localDataGet = LocalDataGet();
@@ -32,6 +34,8 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       token = tokenx.get('token');
       id = tokenx.get('userId');
+      name = tokenx.get('name');
+      image = tokenx.get('image');
       BlocProvider.of<GameCubit>(context).getGames(token);
       BlocProvider.of<WalletCubit>(context).getUserWallet(token,id);
       // Logger().d(token);
@@ -91,22 +95,40 @@ class _HomePageState extends State<HomePage> {
               ):Container();
             },
           ),
-        )      ,
+        ),
         actions: [
-          InkWell(
-            onTap: (){
-              logOut(context);
-            },
-            child: Container(
-              margin: EdgeInsets.only(right: 18),
-              child: const CircleAvatar(
-                radius: 20.0,
-                backgroundImage:
-                AssetImage("assets/images/bkash.png"),
-                backgroundColor: Colors.transparent,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(name!,style: TextStyle(fontWeight: FontWeight.bold),),
+              SizedBox(width: 8,),
+              InkWell(
+                onTap: (){
+
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 10),
+                  child: image=="N/A"? CircleAvatar(
+                    radius: 20.0,
+                    backgroundImage:AssetImage("assets/images/bkash.png"),
+                    backgroundColor: Colors.transparent,
+                  ):CircleAvatar(
+                    radius: 20.0,
+                    backgroundImage: NetworkImage(image!),
+                    backgroundColor: Colors.transparent,
+                  ),
+                ),
               ),
-            ),
+              InkWell(
+                  onTap: (){
+                    logOut(context);
+                  },
+                  child: Icon(Icons.exit_to_app,color: Colors.white,)),SizedBox(width: 8,),
+
+            ],
           ),
+
+
         ],
       ),
       body: SingleChildScrollView(

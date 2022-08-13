@@ -7,6 +7,8 @@ import 'Chat/seller_list.dart';
 import 'Friends/find_friend.dart';
 import 'Home/home_page.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+import 'ProfilePage/profile_page.dart';
 class MainScreen extends StatefulWidget {
   final IO.Socket? socket;
 
@@ -51,7 +53,7 @@ class _MainScreenState extends State<MainScreen> {
             HomePage(),
             FindFriendPage(),
             SellerListChat(),
-            HomePage(),
+            ProfilePage(),
           ],
           onPageChanged: (int index){
             setState(() {

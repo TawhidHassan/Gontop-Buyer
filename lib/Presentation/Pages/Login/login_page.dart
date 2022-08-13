@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             );
           }else{
-            loginDataSave?.storeTokenUserdata(users,data.token, data.user!.id, data.user!.name, data.user!.email, data.user!.role,data.user!.phoneNumber);
+            loginDataSave?.storeTokenUserdata(users,data.token, data.user!.id, data.user!.name, data.user!.email, data.user!.role,data.user!.image!,data.user!.phoneNumber);
             Navigator.pushReplacement(context, PageTransition(MainScreen()));
           }
         }
