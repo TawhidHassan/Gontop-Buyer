@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import '../../Constants/Colors/app_colors.dart';
 import '../../Service/LocalDataBase/localdata.dart';
 import 'Chat/seller_list.dart';
+import 'ForgetPassword/new_password.dart';
+import 'ForgetPassword/reset_password.dart';
 import 'Friends/find_friend.dart';
 import 'Home/home_page.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -49,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
       body:  SafeArea(
         child: PageView(
           controller: _controller,
-          children:  <Widget>[
+          children:   <Widget>[
             HomePage(),
             FindFriendPage(),
             SellerListChat(),

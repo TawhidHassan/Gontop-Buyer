@@ -79,16 +79,6 @@ class _HomePageState extends State<HomePage> {
                       SvgPicture.asset("assets/icons/shoppingcart.svg"),
                        Text("My Gontop Balance ("+data.userwallet!.currentbalance!.toString()+"Tk)",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,
                       ),),
-                      SizedBox(width: 6,),
-                      Container(
-                        height: 10,
-                        width: 10,
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: Color(0xFF00EA5E)
-                        ),
-                      )
                     ],
                   ),
                 ),

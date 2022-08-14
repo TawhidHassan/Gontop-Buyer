@@ -8,6 +8,7 @@ part of 'Login.dart';
 
 Login _$LoginFromJson(Map<String, dynamic> json) => Login(
       json['status'] as String?,
+      json['message'] as String?,
       json['token'] as String?,
       json['user'] == null
           ? null
@@ -16,6 +17,7 @@ Login _$LoginFromJson(Map<String, dynamic> json) => Login(
 
 Map<String, dynamic> _$LoginToJson(Login instance) => <String, dynamic>{
       'status': instance.status,
+      'message': instance.message,
       'token': instance.token,
       'user': instance.user,
     };

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
 import 'package:gontop_buyer/Bloc/Wallet/wallet_cubit.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../Bloc/Order/order_cubit.dart';
 import '../../../../Service/LocalDataBase/localdata.dart';
@@ -44,8 +45,8 @@ class _CompleteOrdersState extends State<CompleteOrders> {
             return Center(child: CircularProgressIndicator(),);
           }
           final data=(state as OrderHistoryComplete).orderResponse;
-          return ListView.builder(
-              itemCount: data!.order!.length,
+          return  data!.order!.isEmpty?Center(child: Lottie.asset('assets/lottie/empty_two.json', height: 200),): ListView.builder(
+              itemCount: data.order!.length,
               itemBuilder: (context,index)=>OrderCard(order:data.order![index] ,)
           );
         },

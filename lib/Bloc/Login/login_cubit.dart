@@ -30,4 +30,21 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
+  void passWordChange(String cureent, String newpass, String confirm, String token) {
+    loginRepository.passWordChange(cureent,newpass,confirm,token).then((result) => {
+      logger.d(result.status.toString()),
+      if(result!=null){
+        emit(LoginUser(login: result))
+      }
+    });
+  }
+
+  void updateProfile(String token,String name, String email, String phone, String password, File? image, String id){
+    loginRepository.updateProfile( token,name,email,phone,password,image,id).then((value) => {
+      if(value !=null){
+        emit(ProfileUpdated())
+      }
+    });
+  }
+
 }

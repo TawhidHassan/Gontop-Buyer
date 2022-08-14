@@ -9,11 +9,12 @@ class Login{
 
 
   String? status;
+  String? message;
   String? token;
   User? user;
 
 
-  Login(this.status, this.token, this.user);
+  Login(this.status, this.message, this.token, this.user);
 
   factory Login.fromJson(Map<String,dynamic>json)=>
       _$LoginFromJson(json);

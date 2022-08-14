@@ -4,6 +4,7 @@ part of 'login_cubit.dart';
 abstract class LoginState {}
 
 class LoginInitial extends LoginState {}
+class ProfileUpdated extends LoginState {}
 
 class LoginUser extends LoginState{
   late final Login? login;

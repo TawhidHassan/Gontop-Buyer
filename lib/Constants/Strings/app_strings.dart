@@ -17,6 +17,7 @@ const SEND_CODE = "/send_page";
 const OTP_PAGE = "/otp_page";
 const NEW_PASSWORD_PAGE = "/new_pass_page";
 const SET_PASSWORD_PAGE = "/set_pass_page";
+const UODATE_PROFILE = "/UODATE_PROFILE";
 
 
 //game

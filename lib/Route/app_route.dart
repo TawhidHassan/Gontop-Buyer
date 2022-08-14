@@ -14,6 +14,7 @@ import '../Bloc/User/user_cubit.dart';
 import '../Bloc/Wallet/wallet_cubit.dart';
 import '../Constants/Strings/app_strings.dart';
 import '../Presentation/Pages/Chat/chat_page.dart';
+import '../Presentation/Pages/ForgetPassword/new_password.dart';
 import '../Presentation/Pages/Friends/find_friend.dart';
 import '../Presentation/Pages/Friends/friend_details.dart';
 import '../Presentation/Pages/Friends/friends_list.dart';
@@ -25,6 +26,7 @@ import '../Presentation/Pages/Login/login_page.dart';
 import '../Presentation/Pages/Orderpage/product_order.dart';
 import '../Presentation/Pages/Orderpage/user_orders.dart';
 import '../Presentation/Pages/Products/game_page.dart';
+import '../Presentation/Pages/ProfilePage/update_profile_page.dart';
 import '../Presentation/Pages/SenFund/send_funt_page.dart';
 import '../Presentation/Pages/Wallet/payment_request_page.dart';
 import '../Presentation/Pages/Wallet/select_method_page.dart';
@@ -179,7 +181,7 @@ class AppRouter {
               ],
               child:OrderPage(id: args!["id"],product: args['product'],),
             ));
-        case LEADER_BOARD_PAGE:
+      case LEADER_BOARD_PAGE:
         return MaterialPageRoute(
             builder: (BuildContext context) => MultiBlocProvider(
               providers: [
@@ -200,6 +202,26 @@ class AppRouter {
                 ),
               ],
               child:UserOrders(),
+            ));
+      case NEW_PASSWORD_PAGE:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<LoginCubit>(
+                  create: (context) => LoginCubit(),
+                ),
+              ],
+              child:NewPasswordPage(),
+            ));
+      case UODATE_PROFILE:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<LoginCubit>(
+                  create: (context) => LoginCubit(),
+                ),
+              ],
+              child:UpdateProfilePage(),
             ));
       case USER_CHAT_PAGE:
         return MaterialPageRoute(

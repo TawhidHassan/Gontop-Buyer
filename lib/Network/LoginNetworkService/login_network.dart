@@ -106,4 +106,54 @@ class LoginNetwork{
       return null;
     }
   }
+
+
+  Future passWordChange(Map<String, String> data, String token)async {
+    // print("call");
+    // print(data);
+    try{
+      var response = await http.patch(
+        Uri.parse(BASE_URL+"users/updateMyPassword"),
+        headers: {
+          "Authorization": "Bearer " + token,
+          "Content-type": "application/json",
+          "Accept": "application/json"
+        },
+        body: json.encode(data),
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+ Future updateProfile(String token, String name, String email, String phone, String password, File? image, String id) async{
+    try{
+      var request =  http.MultipartRequest(
+        'PATCH', Uri.parse(BASE_URL+"users/"+id),
+      );
+      Map<String, String> headers = {
+        "Authorization": "Bearer " + token,
+        "Content-type": "application/json",
+        "Accept": "application/json",
+      };
+      //add headers
+      request.headers.addAll(headers);
+      request.fields['name'] = name;
+      request.fields['email'] = email;
+      request.fields['role'] = "BUYER";
+      request.files.add(await http.MultipartFile.fromPath('image', image!.path));
+    request.fields['phoneNumber'] = phone;
+    // logger.d(image.path);
+    var streamedResponse =await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+    logger.d(response.body);
+    return json.decode(response.body);
+    }catch(e){
+    logger.d(e);
+    return null;
+    }
+  }
 }

@@ -29,5 +29,24 @@ class LoginRepository{
   }
 
 
+  Future<Login> passWordChange(String cureent, String newpass, String confirm, String token) async {
+    Map<String, String> data = {
+      "passwordCurrent": cureent,
+      "password": newpass,
+      "passwordConfirm": confirm
+    };
+    final userRaw=await loginNetwork.passWordChange(data,token);
+    logger.d(Login.fromJson(userRaw));
+
+    return Login.fromJson(userRaw);
+  }
+
+  Future updateProfile(String token,String name, String email, String phone, String password, File? image, String id) async {
+    final userRaw=await loginNetwork.updateProfile(token,name,email,phone,password,image,id);
+    // logger.d(Login.fromJson(userRaw));
+
+    return Login.fromJson(userRaw);
+  }
+
 
 }

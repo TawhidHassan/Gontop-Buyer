@@ -57,6 +57,9 @@ class _LoginPageState extends State<LoginPage> {
 
           if(data!.status=="fail"){
             // ignore: deprecated_member_use
+            setState(() {
+              isLoading=false;
+            });
             print(data.status);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
