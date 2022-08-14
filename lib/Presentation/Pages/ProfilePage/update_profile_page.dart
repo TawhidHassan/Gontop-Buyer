@@ -148,7 +148,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           ),
                           child: circle?
                           CircularProgressIndicator(color: Colors.white):
-                          Text('SignUp',style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w700,color: Colors.white),),
+                          Text('Update',style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w700,color: Colors.white),),
                           onPressed: () async {
                             if (_globalkey.currentState!.validate()) {
                               setState(() {

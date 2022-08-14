@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../Constants/Strings/app_strings.dart';
 import '../../../Service/LocalDataBase/localdata.dart';
 import '../../Widgets/Button/custom_btn.dart';
+import '../Home/home_page.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -43,7 +44,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       padding: EdgeInsets.all(12),
       child: Column(
+
         children: [
+
           SizedBox(height: 12,),
           Container(
             margin: EdgeInsets.only(right: 10),
@@ -83,7 +86,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   )
               )
             ],
+          ),
+          SizedBox(height: 16,),
+          CustomBtn(
+            color: Colors.redAccent,
+            btnText: "Logout",
+            onpressed: (){
+              logOut(context);
+            },
           )
+
         ],
       ),
     );

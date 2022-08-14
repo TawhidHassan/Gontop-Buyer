@@ -26,6 +26,7 @@ class _OrderPageState extends State<OrderPage> {
   TextEditingController fbMail= TextEditingController();
   TextEditingController fbPass= TextEditingController();
   bool? isLoading=false;
+  bool? dataLodedd=false;
   String? token;
   num? currentBalance=0;
   String? sellerId;
@@ -71,6 +72,7 @@ class _OrderPageState extends State<OrderPage> {
                   setState(() {
                     final data=(state as WalletUser).walletResponse;
                     currentBalance=data!.userwallet!.currentbalance;
+                    dataLodedd=true;
                   });
                 },
                 child: BlocBuilder<WalletCubit, WalletState>(
@@ -171,7 +173,7 @@ class _OrderPageState extends State<OrderPage> {
                   ),
                 ),
               ),
-              currentBalance!>=widget.product!.price!?Container():
+              dataLodedd!? currentBalance!<=widget.product!.price!?Container(child: const Center(child: Text("You have not enout ammount"),),):
               isLoading!? Center(child: CircularProgressIndicator(color: Colors.blueAccent,),):Container(
                 margin: EdgeInsets.only(bottom: 10,left: 10,right: 10),
                 child: CustomBtn(
@@ -193,8 +195,8 @@ class _OrderPageState extends State<OrderPage> {
 
                     }
                   },
-                ),
-              )
+                )
+              ):Container(),
             ],
           ),
         ),
@@ -217,6 +219,53 @@ class _OrderPageState extends State<OrderPage> {
             Image.asset('assets/icons/check_grren.png'),
             const Text("Done!",style: TextStyle(color: Color(0XFF000000),fontSize:30,fontWeight: FontWeight.w800 ),textAlign: TextAlign.center,),
             const Text("You have successfully Send A Order request.",style: TextStyle(color: Color(0XFF000000),fontSize:16,fontWeight: FontWeight.w400 ),textAlign: TextAlign.center,),
+            Padding(
+                padding: const EdgeInsets.all(16.0),
+                child:  InkWell(
+                  onTap: (){
+                    Navigator.pushReplacement(context, PageTransition(MainScreen()));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blueAccent
+                    ),
+                    child: Text("Go Back home",style: TextStyle(color: Color(0XFFffffff),fontSize:16 ),textAlign: TextAlign.center,),
+                  ),
+                )
+            ),
+          ],
+        ),
+      ),
+    );
+    // show the dialog
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  showErrorAlertDialog(BuildContext context,String msg) {
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: Container(
+        height: 300,
+        width: MediaQuery.of(context).size.width*0.7,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30)
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset('assets/icons/check_grren.png'),
+            const Text("cancel!",style: TextStyle(color: Color(0XFF000000),fontSize:30,fontWeight: FontWeight.w800 ),textAlign: TextAlign.center,),
+             Text(msg,style: TextStyle(color: Color(0XFF000000),fontSize:16,fontWeight: FontWeight.w400 ),textAlign: TextAlign.center,),
             Padding(
                 padding: const EdgeInsets.all(16.0),
                 child:  InkWell(

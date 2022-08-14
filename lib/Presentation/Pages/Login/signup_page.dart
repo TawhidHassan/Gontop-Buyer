@@ -78,7 +78,6 @@ class _SignUpPageState extends State<SignUpPage> {
           minimum: EdgeInsets.zero,
           child: Scaffold(
             backgroundColor: Colors.white,
-            resizeToAvoidBottomInset: false,
             body:  Container(
               height: MediaQuery.of(context).size.height,
               margin: EdgeInsets.all(12),

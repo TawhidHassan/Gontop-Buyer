@@ -13,7 +13,7 @@ class ServiceButton extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 14,vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Color(0xff262963),
+        color: Color(0xff3A3A3A),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

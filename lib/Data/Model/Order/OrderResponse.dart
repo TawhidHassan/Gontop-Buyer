@@ -12,8 +12,10 @@ class OrderResponse{
 
   String? status;
   List<Order>? order;
+  String?message;
 
-  OrderResponse({this.status, this.order});
+
+  OrderResponse(this.status, this.order, this.message);
 
   factory OrderResponse.fromJson(Map<String,dynamic>json)=>
       _$OrderResponseFromJson(json);

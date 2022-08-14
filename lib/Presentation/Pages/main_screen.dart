@@ -66,9 +66,9 @@ class _MainScreenState extends State<MainScreen> {
       ),
 
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0xFF3879F0),
+        selectedItemColor: Color(0xFFFF9031),
         unselectedItemColor: Colors.white,
-        backgroundColor: Color(0xFF202358),
+        backgroundColor: Color(0xFF363636),
         type: BottomNavigationBarType.fixed,
         elevation: 1,
         items: const [

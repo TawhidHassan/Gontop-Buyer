@@ -8,14 +8,16 @@ part of 'OrderResponse.dart';
 
 OrderResponse _$OrderResponseFromJson(Map<String, dynamic> json) =>
     OrderResponse(
-      status: json['status'] as String?,
-      order: (json['order'] as List<dynamic>?)
+      json['status'] as String?,
+      (json['order'] as List<dynamic>?)
           ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['message'] as String?,
     );
 
 Map<String, dynamic> _$OrderResponseToJson(OrderResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
       'order': instance.order,
+      'message': instance.message,
     };

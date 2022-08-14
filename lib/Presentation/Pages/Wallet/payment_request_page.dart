@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gontop_buyer/Bloc/User/user_cubit.dart';
 import 'package:gontop_buyer/Constants/Colors/app_colors.dart';
@@ -90,7 +91,7 @@ class _PaymentRequestpageState extends State<PaymentRequestpage> {
                       }
                       final data=(state as GetRandomSeller).userResponse;
                       return Expanded(
-                        flex: 3,
+                        flex: 5,
                         child: Container(
                           padding: EdgeInsets.all(10),
                           margin: EdgeInsets.all(16),
@@ -104,21 +105,43 @@ class _PaymentRequestpageState extends State<PaymentRequestpage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Expanded(
-                                  flex:2,
+                                  flex:1,
                                   child: Text("Send money to the given number \n and submit after filling the form \n with correct infromation",style: TextStyle(fontSize: 12,color: Color(0xFFF88A44)),textAlign: TextAlign.center,)
                               ),
+
                               Expanded(
-                                  flex: 2,
-                                  child: CircleAvatar(
-                                    radius:50,
-                                    backgroundImage:NetworkImage(data!.seller![0].image!),
+                                  child: Container(
+                                    width: 168,
+                                      height: 51,
+                                      decoration: BoxDecoration(
+                                        borderRadius:BorderRadius.circular(8),
+                                        border: Border.all(color: Color(0xFFF88A44)),
+                                      ),
+                                      child: Center(child: Text("${data!.seller![0].name}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Color(0xFFF88A44)))))
+                              ),
+                              SizedBox(height: 20,),
+                              Expanded(
+                                  child: Container(
+                                      width: 168,
+                                      padding: EdgeInsets.all(8),
+                                      height: 51,
+                                      decoration: BoxDecoration(
+                                        borderRadius:BorderRadius.circular(8),
+                                        border: Border.all(color: Color(0xFFF88A44)),
+                                      ),
+                                      child: Center(
+                                          child: Row(
+                                            children: [
+                                              Text("${data.seller![0].phoneNumber}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Color(0xFFF88A44))),
+                                              InkWell(
+                                                  onTap: (){
+                                                    Clipboard.setData(ClipboardData(text: data.seller![0].phoneNumber));
+                                                  },
+                                                  child: Icon(Icons.copy,size: 18,))
+                                            ],
+                                          )
+                                      )
                                   )
-                              ),
-                              Expanded(
-                                  child: Text("${data.seller![0].name}",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Color(0xFFF88A44)))
-                              ),
-                              Expanded(
-                                  child: Text("${data.seller![0].phoneNumber}",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Color(0xFFF88A44)))
                               )
                             ],
                           ),
