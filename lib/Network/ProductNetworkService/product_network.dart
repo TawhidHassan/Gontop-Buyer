@@ -92,5 +92,24 @@ class ProductNetwork{
     }
 
   }
+  Future getAllProductsCategory(String? token, String? id)async{
+    try{
+      var response = await http.get(
+        Uri.parse(BASE_URL + "product?limit=0&pageNo=0&category="+id!),
+        headers: {
+          "Authorization":"Bearer "+token!,
+          "Accept": "application/json"
+        },
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    }catch(e){
+      print(e);
+      return null;
+    }
+
+  }
+
+
 
 }

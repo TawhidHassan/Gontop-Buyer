@@ -44,6 +44,14 @@ class ProductRepository{
 
     return ProductResponse.fromJson(userRaw);
   }
+  Future<ProductResponse>  getAllProductsCategory(String? token, String? id) async{
+    final userRaw=await productNetwork.getAllProductsCategory(token,id);
+    // logger.d(Login.fromJson(userRaw));
+
+    return ProductResponse.fromJson(userRaw);
+  }
+
+
 
 
 }

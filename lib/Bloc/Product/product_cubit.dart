@@ -43,4 +43,13 @@ class ProductCubit extends Cubit<ProductState> {
       }
     });
   }
+
+
+  void getAllProductsCategory(String? token, String? id) {
+    productRepository.getAllProductsCategory(token,id).then((value) =>{
+      if(value !=null){
+        emit(GetAllGameProduct(productResponse: value))
+      }
+    });
+  }
 }

@@ -103,7 +103,7 @@ class _UnderGameProductState extends State<UnderGameProduct> {
                           selectedValueCat= value;
                           Categorycircle=true;
                           print(selectedValueCat!.categoryName);
-                          BlocProvider.of<ProductCubit>(context).getAllProductsGame(token,widget.id);
+                          BlocProvider.of<ProductCubit>(context).getAllProductsCategory(token,selectedValueCat!.id);
                         });
                       },
                       dialogBox: false,
@@ -115,13 +115,12 @@ class _UnderGameProductState extends State<UnderGameProduct> {
                 },
               ),
             ),
-            Categorycircle?Container():
             Expanded(
-              flex: 8,
+              flex: 9,
               child: BlocBuilder<ProductCubit, ProductState>(
                 builder: (context, state) {
                   if(state is !GetAllGameProduct){
-                    return Center(child: CircularProgressIndicator(color: Colors.blue,),);
+                    return Center(child: Text("No data found"),);
                   }
                   final data=(state as GetAllGameProduct).productResponse;
                   return Container(
