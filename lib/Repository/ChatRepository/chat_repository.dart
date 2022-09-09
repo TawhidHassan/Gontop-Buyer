@@ -36,9 +36,10 @@ class ChatRepository{
     return CategoryResponse.fromJson(userRaw);
   }
 
-  Future<ChatIdResponse> getChatId(String? token, String? userid) async{
+  Future<ChatIdResponse> getChatId(String? token, String? userid, String? orderID) async{
     Map<String, dynamic> data = {
       "userId": userid,
+      "orderId": orderID,
     };
     final userRaw=await chatNetwork.getChatId(token,data);
     // logger.d(Login.fromJson(userRaw));

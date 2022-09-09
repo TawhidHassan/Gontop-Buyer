@@ -51,7 +51,7 @@ class _SellerListChatState extends State<SellerListChat> {
               const Expanded(
                 flex: 18,
                 child: Center(
-                  child: Text('Seller List', style: TextStyle(
+                  child: Text('Chat List', style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -79,12 +79,13 @@ class _SellerListChatState extends State<SellerListChat> {
                       Navigator.pushNamed(context, USER_CHAT_PAGE,arguments: {
                         "id":data.user![index].id,
                         "name":data.user![index].name,
+                        "order":data.user![index].order!,
                       });
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Colors.white,
+                        color:data.user![index].order!.orderStatus=="completed"?Colors.grey.shade400: Colors.white,
                       ),
                       margin: EdgeInsets.symmetric(vertical: 4,horizontal: 12),
                       padding: EdgeInsets.symmetric(horizontal: 8,vertical: 4),
@@ -107,9 +108,9 @@ class _SellerListChatState extends State<SellerListChat> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(data.user![index].name??"No Name",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
-                                  data.user![index].chats!=null? Text(data.user![index].chats!.messagetype=="text"?data.user![index].chats!.content!:"",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.normal,fontSize: 12),):Container(),
-                                  data.user![index].chats!=null? Text(data.user![index].chats!.messagetype=="text"?StringExtension.displayTimeAgoFromTimestamp(data.user![index].chats!.createdAt!):"",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.normal,fontSize: 12),):Container(),
+                                  Text(data.user![index].name!+"("+data.user![index].order!.product!.productName!+")",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
+                                  data.user![index].message!=null? Text(data.user![index].message!.messagetype=="text"?data.user![index].message!.content!:"",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.normal,fontSize: 12),):Container(),
+                                  data.user![index].message!=null? Text(data.user![index].message!.messagetype=="text"?StringExtension.displayTimeAgoFromTimestamp(data.user![index].message!.createdAt!):"",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.normal,fontSize: 12),):Container(),
 
                                 ],
                               )

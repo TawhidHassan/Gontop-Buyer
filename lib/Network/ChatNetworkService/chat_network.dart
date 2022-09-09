@@ -72,7 +72,7 @@ class ChatNetwork{
     logger.d(data);
     try {
       var response = await http.post(
-        Uri.parse(BASE_URL + "chat-router"),
+        Uri.parse(BASE_URL + "chat-router/chat-under-order"),
         headers: {
           "Authorization": "Bearer " + token!,
           "Content-type": "application/json",

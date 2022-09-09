@@ -15,9 +15,12 @@ ChatUser _$ChatUserFromJson(Map<String, dynamic> json) => ChatUser(
       json['phoneNumber'] as String?,
       json['friendid'] as String?,
       json['online'] as bool?,
-      json['chats'] == null
+      json['message'] == null
           ? null
-          : Chats.fromJson(json['chats'] as Map<String, dynamic>),
+          : Chats.fromJson(json['message'] as Map<String, dynamic>),
+      json['order'] == null
+          ? null
+          : Order.fromJson(json['order'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ChatUserToJson(ChatUser instance) => <String, dynamic>{
@@ -29,5 +32,6 @@ Map<String, dynamic> _$ChatUserToJson(ChatUser instance) => <String, dynamic>{
       'phoneNumber': instance.phoneNumber,
       'friendid': instance.friendid,
       'online': instance.online,
-      'chats': instance.chats,
+      'message': instance.message,
+      'order': instance.order,
     };

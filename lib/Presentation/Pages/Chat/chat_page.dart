@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:gontop_buyer/Data/Model/Order/Order.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -16,11 +17,14 @@ import '../../../Bloc/Friend/friend_cubit.dart';
 import '../../../Constants/Colors/app_colors.dart';
 import '../../../Service/LocalDataBase/localdata.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+import '../Orderpage/Component/order_card.dart';
 class ChatPage extends StatefulWidget {
   final String? userid;
+  final Order? order;
   final String? userName;
   final IO.Socket? socket;
-  const ChatPage({ this.userid, this.userName, this.socket});
+  const ChatPage({ this.userid, this.userName, this.socket, this.order});
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -40,10 +44,11 @@ class _ChatPageState extends State<ChatPage> {
   LocalDataGet _localDataGet = LocalDataGet();
 
   getToken() async {
+    Logger().e(widget.order!.orderStatus);
     var tokenx = await _localDataGet.getData();
     setState(() {
       token = tokenx.get('token');
-      BlocProvider.of<ChatCubit>(context).getChatId(token,widget.userid);
+      BlocProvider.of<ChatCubit>(context).getChatId(token,widget.userid,widget.order!.id);
       // Logger().d(token);
     });
     socketSetup();
@@ -122,10 +127,18 @@ class _ChatPageState extends State<ChatPage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.userName!),
+            widget.order!.orderStatus=="completed"? const Text("You can't Messages, Order Complete",style: TextStyle(fontSize: 14,color: Colors.redAccent),): Text(widget.userName!),
             Text(typeingtext??"",style: TextStyle(fontSize: 9,color: Colors.white),),
           ],
         ),
+        actions: [
+          InkWell(
+            onTap: (){
+              showAlertDialog(context);
+            },
+            child: Icon(Icons.description),
+          )
+        ],
       ),
       body: BlocConsumer<ChatCubit, ChatState>(
         listener: (context, state) {
@@ -193,8 +206,8 @@ class _ChatPageState extends State<ChatPage> {
                   theme:  DefaultChatTheme(
                     inputBackgroundColor: kPrimaryColorx,
                   ),
-                  l10n: const ChatL10nEn(
-                    inputPlaceholder: 'Type Here',
+                  l10n:  ChatL10nEn(
+                    inputPlaceholder:widget.order!.orderStatus=="completed"?"You can't Messages, Order Complete": 'Type Here',
                   ),
                   onPreviewDataFetched: _handlePreviewDataFetched,
                   showUserAvatars: true,
@@ -202,9 +215,10 @@ class _ChatPageState extends State<ChatPage> {
                   showUserNames: true,
                   messages: _messages,
                   onSendPressed: _handleSendPressed,
+                  sendButtonVisibilityMode:widget.order!.orderStatus=="completed"?SendButtonVisibilityMode.hidden: SendButtonVisibilityMode.editing,
                   user: _user!,
                   usePreviewData:true,
-                  onAttachmentPressed: _handleImageSelection,
+                  onAttachmentPressed:widget.order!.orderStatus=="completed"?(){} :_handleImageSelection,
                 ),
               );
             },
@@ -269,6 +283,201 @@ class _ChatPageState extends State<ChatPage> {
     _addMessage(textMessage);
     BlocProvider.of<FriendCubit>(context).sendMessage(token,chatId,message.text);
     widget.socket!.emit("stop typing", chatId);
+  }
+
+
+
+
+  showAlertDialog(BuildContext context) {
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: Container(
+        height: 300,
+        width: MediaQuery.of(context).size.width*0.7,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30)
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  color: Color(0XFFE3E3E3),
+                  borderRadius: BorderRadius.circular(12)
+              ),
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.symmetric(vertical: 12),
+              padding: EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text.rich(
+                            TextSpan(
+                              text: 'Order ID:  ',
+                              children:  <TextSpan>[
+                                TextSpan(text: widget.order!.id!.substring(0,8), style: TextStyle(fontWeight: FontWeight.bold,color: Colors.orangeAccent)),
+                              ],
+                            ),
+                          ),
+                          Text("Created: "+StringExtension.displayTimeAgoFromTimestamp(widget.order!.createdAt!),style: TextStyle(color: Color(0xFF8D8D8D),fontSize: 11),)
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          text: 'Total:  ',
+                          children:  <TextSpan>[
+                            TextSpan(text: widget.order!.orderPrice!.toString()+"  TK", style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xFF2FB380))),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            color: Colors.orangeAccent,
+                            borderRadius: BorderRadius.circular(12)
+                        ),
+                        child: Text(widget.order!.orderStatus!,style: TextStyle(color: Colors.white,fontSize: 8),),
+                      )
+                    ],
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    margin: EdgeInsets.symmetric(vertical: 4),
+                    color: Color(0xffEDF5FF),
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        widget.order!.product!.image!=null&&widget.order!.product!.image!="N/A"?
+                        Expanded(
+                          flex: 2,
+                          child: CircleAvatar(
+                            radius: 20.0,
+                            backgroundImage:
+                            NetworkImage(widget.order!.product!.image!),
+                            backgroundColor: Colors.transparent,
+                          ),
+                        ):Expanded(
+                          flex: 2,
+                          child: CircleAvatar(
+                            radius: 20.0,
+                            backgroundImage:
+                            AssetImage("assets/images/bkash.png"),
+                            backgroundColor: Colors.transparent,
+                          ),
+                        ),
+
+                        Expanded(
+                          flex: 8,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(widget.order!.product!.productName!+"("+widget.order!.product!.points.toString()+")"),
+                              Text(widget.order!.product!.price!.toString()+" Tk")
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Padding(
+                padding: const EdgeInsets.all(16.0),
+                child:  InkWell(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blueAccent
+                    ),
+                    child: Text("Ok",style: TextStyle(color: Color(0XFFffffff),fontSize:16 ),textAlign: TextAlign.center,),
+                  ),
+                )
+            ),
+          ],
+        ),
+      ),
+    );
+    // show the dialog
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+}
+extension StringExtension on String {
+  static String displayTimeAgoFromTimestamp(String  timestamp) {
+    print(timestamp+"xx");
+    DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(timestamp,true);
+    // var dateTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(, true);
+    print("dateLocal.toString()");
+    var dateLocal = parseDate.toLocal();
+    print(dateLocal.toString());
+    final year = int.parse(dateLocal.toString().substring(0, 4));
+    final month = int.parse(dateLocal.toString().substring(5, 7));
+    final day = int.parse(dateLocal.toString().substring(8, 10));
+    final hour = int.parse(dateLocal.toString().substring(11, 13));
+    final minute = int.parse(dateLocal.toString().substring(14, 16));
+
+    final DateTime videoDate = DateTime(year, month, day, hour, minute);
+    final int diffInHours = DateTime.now().difference(videoDate).inHours;
+
+    String timeAgo = '';
+    String timeUnit = '';
+    int timeValue = 0;
+
+    if (diffInHours < 1) {
+      final diffInMinutes = DateTime.now().difference(videoDate).inMinutes;
+      timeValue = diffInMinutes;
+      timeUnit = 'minute';
+    } else if (diffInHours < 24) {
+      timeValue = diffInHours;
+      timeUnit = 'hour';
+    } else if (diffInHours >= 24 && diffInHours < 24 * 7) {
+      timeValue = (diffInHours / 24).floor();
+      timeUnit = 'day';
+    } else if (diffInHours >= 24 * 7 && diffInHours < 24 * 30) {
+      timeValue = (diffInHours / (24 * 7)).floor();
+      timeUnit = 'week';
+    } else if (diffInHours >= 24 * 30 && diffInHours < 24 * 12 * 30) {
+      timeValue = (diffInHours / (24 * 30)).floor();
+      timeUnit = 'month';
+    } else {
+      timeValue = (diffInHours / (24 * 365)).floor();
+      timeUnit = 'year';
+    }
+
+    timeAgo = timeValue.toString() + ' ' + timeUnit;
+    timeAgo += timeValue > 1 ? 's' : '';
+
+    return timeAgo + ' ago';
   }
 }
 String randomString() {

@@ -9,8 +9,8 @@ class ChatCubit extends Cubit<ChatState> {
   ChatRepository chatRepository=ChatRepository();
   ChatCubit() : super(ChatInitial());
 
-  void getChatId(String? token, String? userid) {
-    chatRepository.getChatId(token,userid).then((value) {
+  void getChatId(String? token, String? userid, String? orderID) {
+    chatRepository.getChatId(token,userid,orderID).then((value) {
       if(value !=null){
         emit(ChatIdGet(chatIdResponse: value));
       }

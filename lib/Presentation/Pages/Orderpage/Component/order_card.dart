@@ -45,6 +45,7 @@ class OrderCard extends StatelessWidget {
                   Navigator.pushNamed(context, USER_CHAT_PAGE,arguments: {
                     "id":order!.seller!.id!,
                     "name":order!.seller!.name,
+                    "order":order!,
                   });
                 },
                 child: Container(

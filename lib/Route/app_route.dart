@@ -237,7 +237,7 @@ class AppRouter {
                   create: (context) => ChatMassagesCubit(),
                 ),
               ],
-              child:ChatPage(userid: args!['id'],userName: args["name"],socket: socket),
+              child:ChatPage(userid: args!['id'],userName: args["name"],order: args["order"],socket: socket),
             ));
       default:
         return MaterialPageRoute(
