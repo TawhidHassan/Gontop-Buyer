@@ -1,13 +1,16 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
+import 'package:logger/logger.dart';
 import 'package:progress_state_button/progress_button.dart';
 import '../../../Bloc/Login/login_cubit.dart';
 import '../../../Constants/Colors/app_colors.dart';
 import '../../../Constants/Strings/app_strings.dart';
 import '../../../Service/LoginService/save_user_data_local.dart';
+import '../../../auth_server.dart';
 import '../../Screens/SplashScreen/splash_screen.dart';
 import '../../Widgets/Button/custom_google_btn.dart';
 import '../../Widgets/TextField/normal_textfield.dart';
@@ -38,6 +41,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Logger().e( FirebaseAuth.instance.currentUser!);
+
     users =Hive.box('users');
     loginDataSave=LoginDataSave();
 
@@ -147,6 +152,16 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               SizedBox(height: 12,),
+                              // InkWell(
+                              //     onTap: (){
+                              //       AuthService().signInWithGoogle();
+                              //     },
+                              //     child: Text("Google")),
+                              // InkWell(
+                              //     onTap: (){
+                              //       AuthService().signOut();
+                              //     },
+                              //     child: Text("logOut")),
                               Align(
                                 alignment:Alignment.bottomCenter,
                                 child: InkWell(

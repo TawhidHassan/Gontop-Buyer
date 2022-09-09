@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "583436818081",
+    "project_id": "gontop-362006",
+    "storage_bucket": "gontop-362006.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583436818081:android:0d93fc161d45d2df3482e0",
+        "android_client_info": {
+          "package_name": "com.gontop.buyer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583436818081-2hl3vqmm1oq49h9kpafu96m0krqtjjaq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi37t_hKrFIcIjoCs4Y52SuhwY2eJBoPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583436818081-2hl3vqmm1oq49h9kpafu96m0krqtjjaq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
