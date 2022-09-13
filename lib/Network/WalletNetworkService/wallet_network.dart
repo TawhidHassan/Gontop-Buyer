@@ -69,9 +69,41 @@ class WalletNetwork{
       return null;
     }
   }
+ Future getFunTransferHistory(String? token,String? id) async {
 
+    try {
+      var response = await http.get(
+        Uri.parse(BASE_URL + "wallet-router/tranfer-deposit-log/"+id!),
+        headers: {
+          "Authorization": "Bearer " + token!,
+          "Content-type": "application/json",
+          "Accept": "application/json",
+        },
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+ Future getAddFunTransferHistory(String? token,String? id) async {
 
-
-
+    try {
+      var response = await http.get(
+        Uri.parse(BASE_URL + "wallet-router/buyer-deposit-log/"+id!),
+        headers: {
+          "Authorization": "Bearer " + token!,
+          "Content-type": "application/json",
+          "Accept": "application/json",
+        },
+      );
+      logger.d(response.body);
+      return jsonDecode(response.body);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
 }

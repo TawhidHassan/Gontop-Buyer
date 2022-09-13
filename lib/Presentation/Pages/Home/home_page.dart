@@ -89,6 +89,11 @@ class _HomePageState extends State<HomePage> {
                         child: ServiceButton(title: "My Orders",assets: "assets/icons/receiveicon.svg")),
                     InkWell(
                         onTap: (){
+                          Navigator.pushNamed(context, FUND_TRANSFER_HISTORY_PAGE);
+                        },
+                        child: ServiceButton(title: "Transfer History",assets: "assets/icons/category.svg")),
+                    InkWell(
+                        onTap: (){
                           Navigator.pushNamed(context, LEADER_BOARD_PAGE);
                         },
                         child: ServiceButton(title: "Leaderboard",assets: "assets/icons/ranking.svg")),

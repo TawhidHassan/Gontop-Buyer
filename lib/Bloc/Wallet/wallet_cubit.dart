@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:gontop_buyer/Data/Model/AddFund/FundResponse.dart';
+import 'package:gontop_buyer/Data/Model/FunrdTransfer/FundTransferResponse.dart';
 import 'package:meta/meta.dart';
 
 import '../../Data/Model/Order/OrderResponse.dart';
@@ -33,6 +35,21 @@ class WalletCubit extends Cubit<WalletState> {
     orderRepository.getUserOrders(token,userId,status).then((value) {
       if(value!=null){
         emit(OrderHistoryComplete(orderResponse: value));
+      }
+    });
+  }
+
+  void getFunTransferHistory(String? token, String? userId) {
+    walletRepository.getFunTransferHistory(token,userId).then((value) {
+      if(value!=null){
+        emit(FundTransferHistory(fundTransferResponse: value));
+      }
+    });
+  }
+  void getAddFunTransferHistory(String? token, String? userId) {
+    walletRepository.getAddFunTransferHistory(token,userId).then((value) {
+      if(value!=null){
+        emit(FundAddedTransferHistory(fundResponse:  value));
       }
     });
   }

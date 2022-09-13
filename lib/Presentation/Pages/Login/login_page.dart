@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Logger().e( FirebaseAuth.instance.currentUser!);
+
 
     users =Hive.box('users');
     loginDataSave=LoginDataSave();

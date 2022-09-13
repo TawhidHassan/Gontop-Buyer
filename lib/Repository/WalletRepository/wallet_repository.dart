@@ -1,6 +1,8 @@
 
 import 'dart:io';
 
+import 'package:gontop_buyer/Data/Model/AddFund/FundResponse.dart';
+import 'package:gontop_buyer/Data/Model/FunrdTransfer/FundTransferResponse.dart';
 import 'package:gontop_buyer/Network/WalletNetworkService/wallet_network.dart';
 import 'package:logger/logger.dart';
 
@@ -44,6 +46,21 @@ class WalletRepository{
    // logger.d(Login.fromJson(userRaw));
    return UserWalletResponse.fromJson(userRaw);
  }
+
+ Future<FundTransferResponse> getFunTransferHistory(String? token, String? id) async{
+   final userRaw=await walletNetwork.getFunTransferHistory(token,id);
+   // logger.d(Login.fromJson(userRaw));
+   return FundTransferResponse.fromJson(userRaw);
+ }
+ Future<FundResponse> getAddFunTransferHistory(String? token, String? id) async{
+   final userRaw=await walletNetwork.getAddFunTransferHistory(token,id);
+   // logger.d(Login.fromJson(userRaw));
+   return FundResponse.fromJson(userRaw);
+ }
+
+
+
+
 
 
 }

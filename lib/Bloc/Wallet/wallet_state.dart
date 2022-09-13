@@ -10,6 +10,16 @@ class WalletUser extends WalletState {
 
   WalletUser({this.walletResponse});
 }
+class FundTransferHistory extends WalletState {
+  final FundTransferResponse? fundTransferResponse;
+
+  FundTransferHistory({this.fundTransferResponse});
+}
+class FundAddedTransferHistory extends WalletState {
+  final FundResponse? fundResponse;
+
+  FundAddedTransferHistory({this.fundResponse});
+}
 class OrderHistoryComplete extends WalletState {
   final OrderResponse? orderResponse;
 

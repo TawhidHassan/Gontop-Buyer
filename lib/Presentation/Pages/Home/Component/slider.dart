@@ -7,6 +7,7 @@ import 'package:gontop_buyer/Presentation/Pages/Home/Component/slider_item.dart'
 
 import '../../../../Bloc/Slider/slider_cubit.dart';
 import '../../../../Bloc/Wallet/wallet_cubit.dart';
+import '../../../../Constants/Strings/app_strings.dart';
 import '../../../../Service/LocalDataBase/localdata.dart';
 
 class SliderComponenet extends StatefulWidget {
@@ -70,7 +71,7 @@ class _SliderComponenetState extends State<SliderComponenet> {
               final data=(state as WalletUser).walletResponse;
               return data!.userwallet!=null? InkWell(
                 onTap: (){
-
+                  Navigator.pushNamed(context, FUND_ADD_HISTORY_PAGE);
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width*0.9,
@@ -96,7 +97,7 @@ class _SliderComponenetState extends State<SliderComponenet> {
                         ],
                       ),
                       Divider(color: Colors.white,),
-                      Text("View My Wallet >",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w300,color: Colors.white),),
+                      Text("My Wallet History >",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w300,color: Colors.white),),
                     ],
                   ),
                 ),

@@ -27,6 +27,8 @@ import '../Presentation/Pages/Orderpage/product_order.dart';
 import '../Presentation/Pages/Orderpage/user_orders.dart';
 import '../Presentation/Pages/Products/game_page.dart';
 import '../Presentation/Pages/ProfilePage/update_profile_page.dart';
+import '../Presentation/Pages/SenFund/add_fund_history.dart';
+import '../Presentation/Pages/SenFund/send_fund_history.dart';
 import '../Presentation/Pages/SenFund/send_funt_page.dart';
 import '../Presentation/Pages/Wallet/payment_request_page.dart';
 import '../Presentation/Pages/Wallet/select_method_page.dart';
@@ -222,6 +224,26 @@ class AppRouter {
                 ),
               ],
               child:UpdateProfilePage(),
+            ));
+        case FUND_TRANSFER_HISTORY_PAGE:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<WalletCubit>(
+                  create: (context) => WalletCubit(),
+                ),
+              ],
+              child:SendFunHistoryPage(),
+            ));
+        case FUND_ADD_HISTORY_PAGE:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<WalletCubit>(
+                  create: (context) => WalletCubit(),
+                ),
+              ],
+              child:AddFunHistoryPage(),
             ));
       case USER_CHAT_PAGE:
         return MaterialPageRoute(
