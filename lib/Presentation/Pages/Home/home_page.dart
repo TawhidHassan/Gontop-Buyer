@@ -136,7 +136,8 @@ class _HomePageState extends State<HomePage> {
                                 return InkWell(
                                   onTap: (){
                                     Navigator.pushNamed(context, GAME_PRODUCTS,arguments: {
-                                      "id":data.data![index].id!
+                                      "id":data.data![index].id!,
+                                      "game":data.data![index],
                                     });
                                   },
                                   child: Container(

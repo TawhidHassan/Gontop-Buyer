@@ -169,7 +169,7 @@ class AppRouter {
                   create: (context) => ProductCubit(),
                 ),
               ],
-              child:UnderGameProduct(id: args!["id"]),
+              child:UnderGameProduct(id: args!["id"],game: args['game'],),
             ));
       case CREATE_ORDER_PAGE:
         return MaterialPageRoute(

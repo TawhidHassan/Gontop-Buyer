@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gontop_buyer/Data/Model/Game/Game.dart';
 import 'package:search_choices/search_choices.dart';
 
 
@@ -13,7 +14,8 @@ import '../../../Service/LocalDataBase/localdata.dart';
 
 class UnderGameProduct extends StatefulWidget {
   final String? id;
-  const UnderGameProduct({Key? key, this.id}) : super(key: key);
+  final Game? game;
+  const UnderGameProduct({Key? key, this.id, this.game}) : super(key: key);
 
   @override
   _UnderGameProductState createState() => _UnderGameProductState();
@@ -52,6 +54,35 @@ class _UnderGameProductState extends State<UnderGameProduct> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
+            Container(
+              height: 250,
+              child: Stack(
+                children: [
+                  Align(
+                    alignment:Alignment.topCenter,
+                    child: Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                        image: new DecorationImage(
+                          image:  NetworkImage(widget.game!.image!),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment:Alignment.bottomCenter,
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      width: MediaQuery.of(context).size.width,
+                      height: 100,
+                      color: Colors.black.withOpacity(0.9),
+                      child: Text(widget.game!.about!,style: TextStyle(color: Colors.white),),
+                    ),
+                  )
+                ],
+              ),
+            ),
             BlocListener<CategoryCubit, CategoryState>(
               listener: (context, state) {
                 if(state is GetAllCartegory){
