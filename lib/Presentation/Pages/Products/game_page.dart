@@ -77,7 +77,7 @@ class _UnderGameProductState extends State<UnderGameProduct> {
                       width: MediaQuery.of(context).size.width,
                       height: 100,
                       color: Colors.black.withOpacity(0.9),
-                      child: Text(widget.game!.about!,style: TextStyle(color: Colors.white),),
+                      child: Text(widget.game!.gameName!+"\n"+"About: "+widget.game!.about!,style: TextStyle(color: Colors.white),),
                     ),
                   )
                 ],
