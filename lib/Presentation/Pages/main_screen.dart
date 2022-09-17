@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../Constants/Colors/app_colors.dart';
 import '../../Service/LocalDataBase/localdata.dart';
+import 'Announcement/announcement_page.dart';
 import 'Chat/seller_list.dart';
 import 'ForgetPassword/new_password.dart';
 import 'ForgetPassword/reset_password.dart';
@@ -54,6 +55,7 @@ class _MainScreenState extends State<MainScreen> {
           children:   <Widget>[
             HomePage(),
             FindFriendPage(),
+            AnnouncemnetPage(),
             SellerListChat(),
             ProfilePage(),
           ],
@@ -79,6 +81,10 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
             label: 'Friends',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Announcement',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chat ),

@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gontop_buyer/Bloc/Announcement/announcement_cubit.dart';
 import 'package:gontop_buyer/Bloc/Category/category_cubit.dart';
 import 'package:gontop_buyer/Bloc/Friend/friend_cubit.dart';
 import 'package:gontop_buyer/Bloc/Game/game_cubit.dart';
@@ -67,6 +68,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<WalletCubit>(
           create: (context) => WalletCubit(),
+        ),
+        BlocProvider<AnnouncementCubit>(
+          create: (context) => AnnouncementCubit(),
         ),
       ],
       child: MaterialApp(
