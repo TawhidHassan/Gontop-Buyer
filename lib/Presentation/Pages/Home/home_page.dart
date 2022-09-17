@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 12,),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 12),
+                  margin: EdgeInsets.symmetric(horizontal: 12,vertical: 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: const Color(0xFF343232),
@@ -125,34 +125,34 @@ class _HomePageState extends State<HomePage> {
                           return Container(
                             color: const Color(0xFF343232),
                             margin: EdgeInsets.only(left: 16,right: 16),
-                            child: GridView.builder(
+                            child: GridView.count(
+                              
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: data!.data!.length,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount:2,mainAxisSpacing: 10,crossAxisSpacing: 10),
-
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: (){
-                                    Navigator.pushNamed(context, GAME_PRODUCTS,arguments: {
-                                      "id":data.data![index].id!,
-                                      "game":data.data![index],
-                                    });
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.all(2),
-                                    height: 81,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      image: DecorationImage(
-                                        image: NetworkImage(data.data![index].image!),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
+                              childAspectRatio: 5.0 / 3.0,
+                               crossAxisCount: 2,
+                               children: data!.data!.map((e) {
+                                 return InkWell(
+                                   onTap: (){
+                                     Navigator.pushNamed(context, GAME_PRODUCTS,arguments: {
+                                       "id":e.id!,
+                                       "game":e,
+                                     });
+                                   },
+                                   child: Container(
+                                     margin: EdgeInsets.all(2),
+                                     height: 30,
+                                     decoration: BoxDecoration(
+                                       borderRadius: BorderRadius.circular(8),
+                                       image: DecorationImage(
+                                         image: NetworkImage(e.image!),
+                                         fit: BoxFit.cover,
+                                       ),
+                                     ),
+                                   ),
+                                 );
+                               }).toList(),
+                              
                             ),
                           );
                         },

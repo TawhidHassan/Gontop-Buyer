@@ -53,7 +53,7 @@ class _AddFunHistoryPageState extends State<AddFunHistoryPage> {
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
                 itemCount: data!.depositamount!.length,
-                itemBuilder: (context, index) =>DepositeCardItem(status:  data.depositamount![index].paymentStatus!,image: "assets/images/bkash.png",date:StringExtension.displayTimeAgoFromTimestamp(data.depositamount![index].createdAt!),
+                itemBuilder: (context, index) =>DepositeCardItem(methos: data.depositamount![index].paymentType,numberSend: data.depositamount![index].depositorphoneNumber,submitnumber: data.depositamount![index].transactionId,status:  data.depositamount![index].paymentStatus!,image: "assets/images/bkash.png",date:StringExtension.displayTimeAgoFromTimestamp(data.depositamount![index].createdAt!),
                   name: data.depositamount![index].seller!.name,ammount: data.depositamount![index].depositBalance!.toString(),)
             ),
           );

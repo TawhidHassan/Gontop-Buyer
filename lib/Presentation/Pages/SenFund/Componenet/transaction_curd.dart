@@ -5,8 +5,11 @@ class DepositeCardItem extends StatelessWidget {
   final String? image;
   final String? date;
   final String? ammount;
+  final String? numberSend;
+  final String? submitnumber;
+  final String? methos;
   final String? status;
-  const DepositeCardItem({Key? key, this.name, this.image, this.date, this.ammount, this.status}) : super(key: key);
+  const DepositeCardItem({Key? key, this.name, this.image, this.date, this.ammount, this.status, this.numberSend, this.submitnumber, this.methos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,9 @@ class DepositeCardItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children:  [
                   Text(name??"",style: TextStyle(fontSize:14,fontWeight: FontWeight.bold ),),
+                  Text("Method: "+methos!,style: TextStyle(fontSize:11,fontWeight: FontWeight.bold ),),
+                  Text("Receiver Number: "+numberSend!,style: TextStyle(fontSize:11,fontWeight: FontWeight.bold ),),
+                  Text("Transaction Number: "+submitnumber!,style: TextStyle(fontSize:11,fontWeight: FontWeight.bold ),),
                   status!=null? Text(status=="accept"?"Accept":"Pending",style: TextStyle(fontSize:14,fontWeight: FontWeight.bold ),):Container(),
                   Text(date!,style: TextStyle(fontSize:9,fontWeight: FontWeight.bold,color: Color(0xFF868894) ),),
                 ],
