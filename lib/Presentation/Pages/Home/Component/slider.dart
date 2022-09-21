@@ -47,7 +47,24 @@ class _SliderComponenetState extends State<SliderComponenet> {
               return const Center(child: CircularProgressIndicator(color: Colors.white,),);
             }
             final data=(state as GetAllSlider).sliderResponse;
-            return data!.data==null||data.data!.isEmpty?Container():
+            return data!.data==null||data.data!.isEmpty?Container(
+              height: 200.0,
+              color: Color(0xff3A3A3A),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(35.0),
+                    child: Image.asset("assets/images/logo.png",height: 40,),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30.0),
+                    child: const Text("Welcome back \n On Gontop",style: TextStyle(color: Colors.white,fontSize: 22,fontWeight: FontWeight.bold),textAlign: TextAlign.start,),
+                  )
+                ],
+              ),
+            ):
             CarouselSlider.builder(
               itemCount: data.data!.length,
               itemBuilder:  (BuildContext context, int itemIndex, int pageViewIndex) =>

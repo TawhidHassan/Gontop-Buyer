@@ -54,9 +54,10 @@ class OrderNetwork{
   }
 
   Future getUserOrders(String? token, String? userId, String status) async {
+    logger.i(BASE_URL + "order-router?orderstatus="+status+"&limit=&pageNo=&userid="+userId!);
     try {
       var response = await http.get(
-        Uri.parse(BASE_URL + "order-router?orderstatus="+status+"&limit=&pageNo=&userid="+userId!),
+        Uri.parse(BASE_URL + "order-router?orderstatus="+status+"&limit=&pageNo=&userid="+userId),
         headers: {
           "Authorization": "Bearer " + token!,
           "Content-type": "application/json",

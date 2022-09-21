@@ -16,7 +16,7 @@ class SellerListChat extends StatefulWidget {
 
 class _SellerListChatState extends State<SellerListChat> {
   String? token;
-
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
   //storage instance
   LocalDataGet _localDataGet = LocalDataGet();
 
@@ -62,76 +62,83 @@ class _SellerListChatState extends State<SellerListChat> {
           ),
         ),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: BlocBuilder<FriendCubit, FriendState>(
-          builder: (context, state) {
-            if(state is !GetAllChatUsers){
-              return Center(child: CircularProgressIndicator(color: Colors.white,),);
-            }
-            final data=(state as GetAllChatUsers).chatUserResponse;
-            return ListView.builder(
-                itemCount: data!.user!.length,
-                itemBuilder:(context,index){
-                  return InkWell(
-                    onTap: (){
-                      Navigator.pushNamed(context, USER_CHAT_PAGE,arguments: {
-                        "id":data.user![index].id,
-                        "name":data.user![index].name,
-                        "order":data.user![index].order!,
-                      });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color:data.user![index].order!.orderStatus=="completed"?Colors.grey.shade400: Colors.white,
-                      ),
-                      margin: EdgeInsets.symmetric(vertical: 4,horizontal: 12),
-                      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 4),
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              flex: 2,
-                              child:data.user![index].image=="N/A"?CircleAvatar(
-                                radius:25,
-                                child: Text(data.user![index].name!=null?data.user![index].name![0]:"0"),
-                              ):
-                              CircleAvatar(
-                                radius:25,
-                                backgroundImage:NetworkImage(data.user![index].image!),
-                              )
-                          ),
-                          Expanded(
-                              flex: 8,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(data.user![index].name!+"("+data.user![index].order!.product!.productName!+")",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
-                                  data.user![index].message!=null? Text(data.user![index].message!.messagetype=="text"?data.user![index].message!.content!:"",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.normal,fontSize: 12),):Container(),
-                                  data.user![index].message!=null? Text(data.user![index].message!.messagetype=="text"?StringExtension.displayTimeAgoFromTimestamp(data.user![index].message!.createdAt!):"",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.normal,fontSize: 12),):Container(),
+      body: RefreshIndicator(
+        key: refreshKey,
+        onRefresh:refreshList,
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: BlocBuilder<FriendCubit, FriendState>(
+            builder: (context, state) {
+              if(state is !GetAllChatUsers){
+                return Center(child: CircularProgressIndicator(color: Colors.white,),);
+              }
+              final data=(state as GetAllChatUsers).chatUserResponse;
+              return ListView.builder(
+                  itemCount: data!.user!.length,
+                  itemBuilder:(context,index){
+                    return InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, USER_CHAT_PAGE,arguments: {
+                          "id":data.user![index].id,
+                          "name":data.user![index].name,
+                          "order":data.user![index].order!,
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color:data.user![index].order!.orderStatus=="completed"?Colors.grey.shade400: Colors.white,
+                        ),
+                        margin: EdgeInsets.symmetric(vertical: 4,horizontal: 12),
+                        padding: EdgeInsets.symmetric(horizontal: 8,vertical: 4),
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          children: [
+                            Expanded(
+                                flex: 2,
+                                child:data.user![index].image=="N/A"?CircleAvatar(
+                                  radius:25,
+                                  child: Text(data.user![index].name!=null?data.user![index].name![0]:"0"),
+                                ):
+                                CircleAvatar(
+                                  radius:25,
+                                  backgroundImage:NetworkImage(data.user![index].image!),
+                                )
+                            ),
+                            Expanded(
+                                flex: 8,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(data.user![index].name!+"("+data.user![index].order!.product!.productName!+")",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
+                                    data.user![index].message!=null? Text(data.user![index].message!.messagetype=="text"?data.user![index].message!.content!:"",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.normal,fontSize: 12),):Container(),
+                                    data.user![index].message!=null? Text(data.user![index].message!.messagetype=="text"?StringExtension.displayTimeAgoFromTimestamp(data.user![index].message!.createdAt!):"",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.normal,fontSize: 12),):Container(),
 
-                                ],
-                              )
-                          ),
-                           Expanded(
-                              flex: 1,
-                              child:CircleAvatar(
-                                radius: 5,
-                                backgroundColor:data.user![index].online!? Colors.green:Colors.grey,
-                              )
-                          )
-                        ],
+                                  ],
+                                )
+                            ),
+                             Expanded(
+                                flex: 1,
+                                child:CircleAvatar(
+                                  radius: 5,
+                                  backgroundColor:data.user![index].online!? Colors.green:Colors.grey,
+                                )
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  );;
-                }
-            );
-          },
+                    );;
+                  }
+              );
+            },
+          ),
         ),
       ),
     );
+  }
+  Future<Null>refreshList() async{
+    BlocProvider.of<FriendCubit>(context).getAllUserChat(token);
   }
 }
 extension StringExtension on String {
